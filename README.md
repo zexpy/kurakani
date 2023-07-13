@@ -19,3 +19,12 @@ This Kurakani has some additional tools already setup for you:
 -   [TypeScript](https://www.typescriptlang.org/) for static type checking
 -   [Prettier](https://prettier.io) for code formatting
 -   [Trpc](https://trpc.io/) for end-to-end typesafe apis
+
+# Setting up project
+
+1. Clone the repo (`git clone https://github.com/kurakanii/kurakani.git`)
+2. Install dependencies (`yarn`)
+3. Get `.env` file from @morphhyy
+4. Run web app (`yarn start:native`)
+5. Run server (`yarn start:server`)
+6. Run both (`yarn dev`)
