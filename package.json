@@ -17,5 +17,7 @@
         "turbo": "latest"
     },
     "packageManager": "yarn@1.22.19",
-    "dependencies": {}
+    "dependencies": {
+        "dayjs": "^1.11.9"
+    }
 }
