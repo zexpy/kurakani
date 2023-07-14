@@ -37,7 +37,7 @@ export interface IPost extends IMeta {
 
 export interface IComment extends IMeta {
     id: string
-    user: Pick<IUser, 'id' | 'email' | 'fullName' | 'avatar'>
+    users: Pick<IUser, 'id' | 'email' | 'fullName' | 'avatar'>[]
     content: string
     postId: Pick<IPost, 'id'>
 }
