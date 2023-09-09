@@ -1,5 +1,5 @@
 import { userRouter } from './user'
-import { mergerRouters } from '../lib/trpc'
+import { mergerRouters } from '../utils/trpc'
 
 export const appRouter = mergerRouters(userRouter)
 

@@ -1,4 +1,4 @@
 import { getUser } from '../controller/getUser'
-import { router } from '../lib/trpc'
+import { router } from '../utils/trpc'
 
 export const userRouter = router({ getUser })

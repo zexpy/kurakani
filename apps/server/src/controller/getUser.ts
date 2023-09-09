@@ -1,8 +1,9 @@
-import { publicProcedure } from '../lib/trpc'
+import { publicProcedure } from '../utils/trpc'
 import { z } from 'zod'
 
-const getUser = publicProcedure.input(z.string()).query(opts => {
-    return { message: `Hello my name is ${opts.input}` }
+const getUser = publicProcedure.query(opts => {
+    console.log('hello there')
+    return { message: `Hello my name is Bibek` }
 })
 
 export { getUser }
