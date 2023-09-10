@@ -1,2 +1,2 @@
 export * from './hooks/useCurrentUser'
-export * from './types/user'
+export * from './types/User'

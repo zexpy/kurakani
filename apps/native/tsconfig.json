@@ -6,6 +6,7 @@
       "@components/*": ["components/*"],
       "@screens/*": ["screens/*"],
       "@hooks/*": ["hooks/*"],
+      "@libs/*": ["libs/*"]
     }
   }
 }
