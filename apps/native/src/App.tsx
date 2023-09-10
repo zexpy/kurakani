@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import Navigation from './Navigation'
 import getBaseUrl from './helper/url'
 import { trpc } from './libs/trpc'
+import config from '../tamagui.config'
+import { TamaguiProvider } from 'tamagui'
 
 export default function App() {
     const [queryClient] = useState(() => new QueryClient())
@@ -14,10 +16,12 @@ export default function App() {
         })
     )
     return (
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-            <QueryClientProvider client={queryClient}>
-                <Navigation />
-            </QueryClientProvider>
-        </trpc.Provider>
+        <TamaguiProvider config={config}>
+            <trpc.Provider client={trpcClient} queryClient={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <Navigation />
+                </QueryClientProvider>
+            </trpc.Provider>
+        </TamaguiProvider>
     )
 }

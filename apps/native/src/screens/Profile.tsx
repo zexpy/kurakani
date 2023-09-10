@@ -1,6 +1,6 @@
 import Box from '@components/Box'
 import { trpc } from '@libs/trpc'
-import { Text, View } from 'react-native'
+import { Card, Text, H2, Button } from 'tamagui'
 export default function Profile() {
     const { isError, data, isLoading, error } = trpc.getUser.useQuery()
 
@@ -13,8 +13,22 @@ export default function Profile() {
     }
 
     return (
-        <View className="flex-1 justify-center items-center">
-            <Text className="text-red-500">{data.message}</Text>
-        </View>
+        <Box>
+            <Card
+                backgroundColor="white"
+                animation="bouncy"
+                pressStyle={{ scale: 0.925 }}
+                elevate
+            >
+                <Card.Header>
+                    <H2 color={'white'} textAlign="center">
+                        {data.message}
+                    </H2>
+                </Card.Header>
+                <Card.Footer padded alignItems="flex-end">
+                    <Button size={'$3'}>Click Me</Button>
+                </Card.Footer>
+            </Card>
+        </Box>
     )
 }

@@ -86,8 +86,8 @@ export default function Post({
                         size={35}
                         color={like ? colors.primary : colors.grayLight}
                         onPress={() => {
-                            setLike((prev) => !prev)
-                            setLikeCount((prev) => prev + 1)
+                            setLike(prev => !prev)
+                            setLikeCount(prev => prev + 1)
                         }}
                         className="text-grayish"
                     />
