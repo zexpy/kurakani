@@ -2,7 +2,7 @@ import express, { Application } from 'express'
 import cors from 'cors'
 import { createContext } from './utils/trpc'
 import * as trpcExpress from '@trpc/server/adapters/express'
-import { appRouter } from './router'
+import { appRouter } from './routes'
 import mongoose from 'mongoose'
 
 require('dotenv').config()

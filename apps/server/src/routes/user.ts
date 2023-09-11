@@ -3,7 +3,7 @@ import {
     registerUser,
     getAllUser,
     updateUser,
-} from '../controller/user'
+} from '../controllers/user'
 import { router } from '../utils/trpc'
 
 export const userRouter = router({

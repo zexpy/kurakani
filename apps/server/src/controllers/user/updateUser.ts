@@ -1,4 +1,4 @@
-import { UserModel } from '../../model/user.schema'
+import { UserModel } from '../../models/user.schema'
 import { publicProcedure } from '../../utils/trpc'
 import { z } from 'zod'
 
