@@ -1,28 +1,29 @@
-import mongoose, { Types } from 'mongoose'
+import mongoose, { InferSchemaType, Types } from 'mongoose'
 
-const postSchema = new mongoose.Schema({
-    content: {
-        type: String,
-        required: true,
-    },
-    image: String,
-    post_date: {
-        type: Date,
-        default: Date.now(),
-    },
-    likes_count: Number,
-    user_id: {
-        type: Types.ObjectId,
-        ref: 'User',
-    },
-    comments: [
-        {
-            type: Types.ObjectId,
-            ref: 'Comment',
+const postSchema = new mongoose.Schema(
+    {
+        content: {
+            type: String,
+            required: true,
         },
-    ],
-})
+        image: String,
+        likes_count: Number,
+        userId: {
+            type: Types.ObjectId,
+            ref: 'User',
+        },
+        comments: [
+            {
+                type: Types.ObjectId,
+                ref: 'Comment',
+            },
+        ],
+    },
+    { timestamps: true }
+)
 
-const PostModel = mongoose.model('Post', postSchema)
+type Post = InferSchemaType<typeof postSchema>
+
+const PostModel = mongoose.model<Post>('Post', postSchema)
 
 export default PostModel

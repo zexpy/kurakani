@@ -5,13 +5,11 @@ import { TRPCError } from '@trpc/server'
 
 export const registerUser = publicProcedure
     .input(
-        z
-            .object({
-                email: z.string(),
-                password: z.string(),
-                username: z.string(),
-            })
-            .required()
+        z.object({
+            email: z.string(),
+            password: z.string(),
+            username: z.string(),
+        })
     )
     .mutation(async opts => {
         const { email, password, username } = opts.input

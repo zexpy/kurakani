@@ -6,29 +6,21 @@ import { TRPCError } from '@trpc/server'
 
 export const addComment = publicProcedure
     .input(
-        z
-            .object({
-                user_id: z.string(),
-                post_id: z.string(),
-                content: z.string(),
-            })
-            .required()
+        z.object({
+            userId: z.string(),
+            postId: z.string(),
+            content: z.string(),
+        })
     )
     .mutation(async opts => {
-        const { user_id, post_id, content } = opts.input
-
         try {
-            const findPost = await PostModel.findById(post_id)
+            const findPost = await PostModel.findById(opts.input.postId)
 
             if (!findPost) {
                 return
             }
 
-            const newComment = new CommentModel({
-                user_id,
-                post_id,
-                content,
-            })
+            const newComment = new CommentModel(opts.input)
 
             await newComment.save()
             findPost.comments.push(newComment.id)

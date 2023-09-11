@@ -17,10 +17,7 @@ export const updateUser = publicProcedure
     .mutation(async opts => {
         return await UserModel.findByIdAndUpdate(
             opts.input.id,
-            {
-                ...opts.input.update,
-                updated_at: new Date(),
-            },
+            opts.input.update,
             { new: true }
         )
     })

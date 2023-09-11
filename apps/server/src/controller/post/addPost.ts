@@ -8,17 +8,11 @@ export const addPost = publicProcedure
         z.object({
             image: z.string().optional(),
             content: z.string(),
-            user_id: z.custom<mongoose.Types.ObjectId>(),
+            userId: z.custom<mongoose.Types.ObjectId>(),
         })
     )
     .mutation(async opts => {
-        const { image, content, user_id } = opts.input
-        const newPost = new PostModel({
-            image: image ?? '',
-            content,
-            user_id,
-        })
+        const newPost = new PostModel(opts.input)
         await newPost.save()
-        console.log({ newPost })
-        return newPost.populate('user_id')
+        return newPost.populate('userId')
     })

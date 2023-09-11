@@ -7,7 +7,7 @@ export * from './addPost'
 export const getPostById = publicProcedure
     .input(z.string())
     .query(async opts => {
-        return await PostModel.findById(opts.input).populate('user_id')
+        return await PostModel.findById(opts.input).populate('userId')
     })
 
 export const getPostByUserId = publicProcedure
@@ -15,5 +15,5 @@ export const getPostByUserId = publicProcedure
     .query(async opts => {
         return await PostModel.find({ user_id: opts.input })
             .populate('user_id')
-            .populate({ path: 'comments', select: ['content', 'user_id'] })
+            .populate({ path: 'comments', select: ['content', 'userId'] })
     })

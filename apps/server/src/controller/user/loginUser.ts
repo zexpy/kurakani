@@ -5,12 +5,10 @@ import { UserModel } from '../../model/user.schema'
 
 export const loginUser = publicProcedure
     .input(
-        z
-            .object({
-                email: z.string(),
-                password: z.string(),
-            })
-            .required()
+        z.object({
+            email: z.string(),
+            password: z.string(),
+        })
     )
     .mutation(async opts => {
         const { email, password } = opts.input
