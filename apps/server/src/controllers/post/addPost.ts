@@ -1,14 +1,13 @@
 import { z } from 'zod'
 import { publicProcedure } from '../../utils/trpc'
-import PostModel from '../../model/post.schema'
-import mongoose from 'mongoose'
+import PostModel from '../../models/post.schema'
 
 export const addPost = publicProcedure
     .input(
         z.object({
             image: z.string().optional(),
             content: z.string(),
-            userId: z.custom<mongoose.Types.ObjectId>(),
+            userId: z.string(),
         })
     )
     .mutation(async opts => {

@@ -1,5 +1,5 @@
 import { router } from '../utils/trpc'
-import { addComment } from '../controller/comment'
+import { addComment } from '../controllers/comment'
 
 export const commmentRouter = router({
     addComment,

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { publicProcedure } from '../../utils/trpc'
-import { UserModel } from '../../model/user.schema'
+import { UserModel } from '../../models/user.schema'
 import { TRPCError } from '@trpc/server'
 
 export const registerUser = publicProcedure
