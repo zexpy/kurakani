@@ -1,18 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { httpBatchLink } from '@trpc/client'
 import React, { useState } from 'react'
 import Navigation from './Navigation'
-import getBaseUrl from './helper/url'
-import { trpc } from './libs/trpc'
+import { trpc } from '@libs/trpc'
+import { api } from '@libs/api'
 
 export default function App() {
     const [queryClient] = useState(() => new QueryClient())
-    const [trpcClient] = useState(() =>
-        trpc.createClient({
-            links: [httpBatchLink({ url: `${getBaseUrl()}/trpc` })],
-            transformer: null,
-        })
-    )
+    const [trpcClient] = useState(() => api)
+
     return (
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
             <QueryClientProvider client={queryClient}>

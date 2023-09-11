@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { publicProcedure } from '../../utils/trpc'
+import { privateProcedure } from '../../utils/trpc'
 import { UserModel } from '../../models/user.schema'
 
-export const deleteUser = publicProcedure
+export const deleteUser = privateProcedure
     .input(z.string())
     .mutation(async opts => {
         return await UserModel.findByIdAndDelete(opts.input)

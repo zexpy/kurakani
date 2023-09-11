@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import PostModel from '../../models/post.schema'
-import { publicProcedure } from '../../utils/trpc'
+import { privateProcedure } from '../../utils/trpc'
 
-export const getPostById = publicProcedure
+export const getPostById = privateProcedure
     .input(z.string())
     .query(async opts => {
         return await PostModel.findById(opts.input).populate('userId')

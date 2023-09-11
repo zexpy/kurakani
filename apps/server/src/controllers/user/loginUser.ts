@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { publicProcedure } from '../../utils/trpc'
 import { UserModel } from '../../models/user.schema'
+import { signAccessToken } from '../../libs/auth'
 
 export const loginUser = publicProcedure
     .input(
@@ -20,11 +21,19 @@ export const loginUser = publicProcedure
             })
         }
 
-        if (user.password !== password) {
+        // @ts-ignore
+        const valid = await user.isValidPassword(password)
+        if (!valid) {
             throw new TRPCError({
                 code: 'BAD_REQUEST',
                 message: 'Incorrect Password!',
             })
         }
-        return user
+
+        const token = signAccessToken({ id: user.id, email: user.email })
+
+        return {
+            jwt: token,
+            user: { ...user },
+        }
     })

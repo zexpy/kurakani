@@ -1,4 +1,5 @@
-import mongoose, { InferSchemaType } from 'mongoose'
+import mongoose, { Document, InferSchemaType } from 'mongoose'
+import bcrypt from 'bcrypt'
 
 const userSchema = new mongoose.Schema(
     {
@@ -23,6 +24,15 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true }
 )
+
+userSchema.pre('save', async function () {
+    const hashPassword = await bcrypt.hash(this.password, 10)
+    this.password = hashPassword
+})
+
+userSchema.methods.isValidPassword = async function (password: string) {
+    return await bcrypt.compare(password, this.password)
+}
 
 type User = InferSchemaType<typeof userSchema>
 
