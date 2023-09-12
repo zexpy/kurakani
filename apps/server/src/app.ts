@@ -1,23 +1,21 @@
 import express, { Application } from 'express'
 import cors from 'cors'
-import { createContext } from './utils/trpc'
+import { createContext } from './libs/trpc'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { appRouter } from './routes'
-import mongoose from 'mongoose'
+import { createServer } from 'http'
+import { config } from 'dotenv'
+import { initializeDatabase } from './utils/mongo.db'
+import { initializeSocket } from './utils/socket'
 
-require('dotenv').config()
-const port = process.env.PORT || 9000
-
+config()
 const app: Application = express()
-app.use(express.json())
+const server = createServer(app)
+const port = process.env.PORT || 9000
 app.use(cors())
-
-mongoose.Promise = Promise
-mongoose.connect(process.env.DB_URL!, {})
-const db = mongoose.connection
-db.on('error', err => console.error((err as Error).message))
-db.on('open', () => console.log('💫 : Connected to database!'))
-
+initializeDatabase()
+initializeSocket(server)
+app.use(express.json())
 app.use(
     '/trpc',
     trpcExpress.createExpressMiddleware({
@@ -26,6 +24,6 @@ app.use(
     })
 )
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`⚡️: Server is running at http://localhost:${port}`)
 })
