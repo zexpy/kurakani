@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { publicProcedure } from '../../utils/trpc'
+import { publicProcedure } from '../../libs/trpc'
 import PostModel from '../../models/post.schema'
 
 export const addPost = publicProcedure

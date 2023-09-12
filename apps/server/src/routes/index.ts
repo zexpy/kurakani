@@ -1,5 +1,5 @@
 import { userRouter } from './user'
-import { mergerRouters } from '../utils/trpc'
+import { mergerRouters } from '../libs/trpc'
 import { postRouter } from './post'
 import { commmentRouter } from './comment'
 
