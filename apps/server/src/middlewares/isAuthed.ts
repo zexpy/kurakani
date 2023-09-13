@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { middleware } from '../utils/trpc'
+import { middleware } from '../libs/trpc'
 import { verifyAccessToken } from '../libs/auth'
 import { UserModel } from '../models/user.schema'
 

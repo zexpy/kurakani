@@ -5,6 +5,7 @@ import Login from './screens/Login'
 import Tabs from './Tabs'
 import Message from '@components/chat/Message'
 import { useCurrentUser } from '@kurakani/core'
+import SignUp from '@screens/SignUp'
 
 const Stack = createNativeStackNavigator()
 const AfterAuth = () => {
@@ -28,7 +29,20 @@ const BeforeAuth = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="login" component={Login} />
+                <Stack.Screen
+                    name="login"
+                    component={Login}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="signup"
+                    component={SignUp}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     )
