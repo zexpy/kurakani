@@ -7,43 +7,41 @@ import {
     Image,
 } from 'react-native'
 import React from 'react'
+import Card from '../ui/Card'
+import Input from '../ui/Input'
+import Button from '../ui/Button'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ILoginCreds, LoginSchema } from '@kurakani/core'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
-import Card from '../ui/Card'
-import Input from '../ui/Input'
-import Button from '../ui/Button'
+import { ISignUpCreds, SignUpSchema } from '@kurakani/core'
 import { trpc } from '@libs/trpc'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const LoginScreen = () => {
-    const { isLoading, mutate: loginWithEmail } = trpc.loginUser.useMutation()
-
-    const navigation = useNavigation()
+const Signup = () => {
+    const { mutate: signUpWithEmail, isLoading } =
+        trpc.registerUser.useMutation()
     const {
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm<ILoginCreds>({
-        resolver: zodResolver(LoginSchema),
+    } = useForm<ISignUpCreds>({
+        resolver: zodResolver(SignUpSchema),
     })
-
-    const handleNavigateSignup = () => {
-        navigation.navigate('signup' as never)
+    const navigation = useNavigation()
+    const handleNavigate = () => {
+        navigation.navigate('login' as never)
     }
-
-    const handleLogin = (data: ILoginCreds) => {
-        loginWithEmail(data, {
-            onSuccess: user => {
-                AsyncStorage.setItem('token', 'hello123')
+    const handleSignUp = async (data: ISignUpCreds) => {
+        if (!data) return
+        signUpWithEmail(data, {
+            onSuccess: () => {
                 Toast.show({
                     type: 'success',
                     text1: 'Success',
-                    text2: 'Logged in successfully',
+                    text2: 'Signed up successfully',
                 })
+                navigation.navigate('login' as never)
             },
             onError: err => {
                 Toast.show({
@@ -57,13 +55,22 @@ const LoginScreen = () => {
 
     return (
         <SafeAreaView>
-            <ScrollView className="bg-[#FFFFFF] h-screen p-5 pt-20 ">
+            <ScrollView className="p-5 bg-[#FFFF] h-screen">
                 <Image
-                    source={require('../../assets/login.png')}
+                    source={require('../../assets/signup.png')}
                     className="h-56 w-56 mx-auto "
                 />
+
                 <Card>
-                    <Text className="text-2xl font-bold opacity-60">Login</Text>
+                    <Text className="text-2xl font-bold opacity-60">
+                        Sign up
+                    </Text>
+                    <Input
+                        label="Username"
+                        control={control}
+                        name="username"
+                        error={errors.username?.message}
+                    />
                     <Input
                         label="Email"
                         control={control}
@@ -72,36 +79,38 @@ const LoginScreen = () => {
                     />
                     <Input
                         label="Password"
-                        name="password"
                         secure={true}
+                        name="password"
                         control={control}
                         error={errors.password?.message}
                     />
-                    <Pressable className="my-2">
-                        <Text className="text-sm text-gray-400 ml-1 font-bold mx-2">
-                            Forgot Password?
-                        </Text>
-                    </Pressable>
+                    <Input
+                        label="Confirm your password"
+                        secure={true}
+                        name="confirmPassword"
+                        control={control}
+                        error={errors.confirmPassword?.message}
+                    />
                     <Button
-                        className="mt-1 mb-2"
-                        onPress={handleSubmit(handleLogin)}
+                        className="mt-3"
+                        onPress={handleSubmit(handleSignUp)}
                     >
                         {isLoading ? (
                             <ActivityIndicator size="large" color="white" />
                         ) : (
                             <Text className="text-center text-white font-bold py-2">
-                                Login
+                                Sign up
                             </Text>
                         )}
                     </Button>
                 </Card>
-                <View className="flex-row items-center mx-auto">
+                <View className="flex-row items-center mt-2 mx-auto">
                     <Text className="text-sm opacity-60 text-center ">
-                        New to Kurakani?{' '}
+                        Already have an account?{' '}
                     </Text>
-                    <Pressable onPress={handleNavigateSignup}>
+                    <Pressable onPress={handleNavigate}>
                         <Text className="text-sm opacity-60 text-center text-primary font-bold">
-                            Sign up Now
+                            Login Now
                         </Text>
                     </Pressable>
                 </View>
@@ -110,4 +119,4 @@ const LoginScreen = () => {
     )
 }
 
-export default LoginScreen
+export default Signup
