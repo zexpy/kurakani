@@ -34,6 +34,9 @@ export const loginUser = publicProcedure
 
         return {
             jwt: token,
-            user: { ...user },
+            user: {
+                id: user._id,
+                email: user.email,
+            },
         }
     })
