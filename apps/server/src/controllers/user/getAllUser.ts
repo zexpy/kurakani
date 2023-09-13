@@ -1,6 +1,6 @@
 import { UserModel } from '../../models/user.schema'
-import { publicProcedure } from '../../libs/trpc'
+import { privateProcedure } from '../../libs/trpc'
 
-export const getAllUser = publicProcedure.query(() => {
-    return UserModel.find()
+export const getAllUser = privateProcedure.query(async () => {
+    return await UserModel.find()
 })

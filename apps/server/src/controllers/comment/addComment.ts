@@ -1,10 +1,10 @@
 import { z } from 'zod'
-import { publicProcedure } from '../../libs/trpc'
+import { privateProcedure } from '../../libs/trpc'
 import PostModel from '../../models/post.schema'
 import CommentModel from '../../models/comment.schema'
 import { TRPCError } from '@trpc/server'
 
-export const addComment = publicProcedure
+export const addComment = privateProcedure
     .input(
         z.object({
             userId: z.string(),

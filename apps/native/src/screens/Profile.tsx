@@ -1,6 +1,7 @@
 import Box from '@components/Box'
+import { setToken } from '@libs/api'
 import { trpc } from '@libs/trpc'
-import { Text, View } from 'react-native'
+import { Button, Text, View } from 'react-native'
 export default function Profile() {
     // const { isError, data, isLoading, error } = trpc.getUser.useQuery()
 

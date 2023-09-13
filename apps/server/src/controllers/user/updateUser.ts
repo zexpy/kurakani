@@ -1,8 +1,8 @@
 import { UserModel } from '../../models/user.schema'
-import { publicProcedure } from '../../libs/trpc'
+import { privateProcedure } from '../../libs/trpc'
 import { z } from 'zod'
 
-export const updateUser = publicProcedure
+export const updateUser = privateProcedure
     .input(
         z.object({
             id: z.string().readonly(),

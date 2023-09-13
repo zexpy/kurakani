@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { publicProcedure } from '../../libs/trpc'
+import { privateProcedure } from '../../libs/trpc'
 import PostModel from '../../models/post.schema'
 
-export const addPost = publicProcedure
+export const addPost = privateProcedure
     .input(
         z.object({
             image: z.string().optional(),
