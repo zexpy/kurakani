@@ -7,6 +7,7 @@ import {
 import colors from '../assets/colors'
 import { useState } from 'react'
 import { faker } from '@faker-js/faker'
+import socket from '@libs/socket'
 interface PostProps {
     contentType: string
     description?: string
@@ -14,6 +15,7 @@ interface PostProps {
     name: string
     avatar: string
 }
+
 export default function Post({
     contentType,
     description,
@@ -23,6 +25,11 @@ export default function Post({
 }: PostProps) {
     const [like, setLike] = useState(false)
     const [likeCount, setLikeCount] = useState(10)
+
+    socket.on('connect', () => {
+        console.log(`Socket Connected: ${socket.id}`)
+    })
+
     return (
         <View className="bg-gray-200 rounded-lg overflow-hidden shadow-xl p-4 my-3">
             {/* // Profile */}
@@ -86,8 +93,8 @@ export default function Post({
                         size={35}
                         color={like ? colors.primary : colors.grayLight}
                         onPress={() => {
-                            setLike((prev) => !prev)
-                            setLikeCount((prev) => prev + 1)
+                            setLike(prev => !prev)
+                            setLikeCount(prev => prev + 1)
                         }}
                         className="text-grayish"
                     />

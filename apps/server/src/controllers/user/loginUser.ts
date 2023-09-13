@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { publicProcedure } from '../../utils/trpc'
+import { publicProcedure } from '../../libs/trpc'
 import { UserModel } from '../../models/user.schema'
 import { signAccessToken } from '../../libs/auth'
 

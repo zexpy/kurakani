@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { privateProcedure } from '../../utils/trpc'
+import { privateProcedure } from '../../libs/trpc'
 import PostModel from '../../models/post.schema'
 import CommentModel from '../../models/comment.schema'
 import { TRPCError } from '@trpc/server'

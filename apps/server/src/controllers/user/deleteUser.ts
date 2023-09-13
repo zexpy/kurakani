@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { privateProcedure } from '../../utils/trpc'
+import { privateProcedure } from '../../libs/trpc'
 import { UserModel } from '../../models/user.schema'
 
 export const deleteUser = privateProcedure

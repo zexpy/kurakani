@@ -4,7 +4,7 @@ import {
     getAllUser,
     updateUser,
 } from '../controllers/user'
-import { router } from '../utils/trpc'
+import { router } from '../libs/trpc'
 
 export const userRouter = router({
     getAllUser,

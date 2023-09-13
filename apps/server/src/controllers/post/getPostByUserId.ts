@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import PostModel from '../../models/post.schema'
-import { privateProcedure } from '../../utils/trpc'
+import { privateProcedure } from '../../libs/trpc'
 
 export const getPostByUserId = privateProcedure
     .input(z.string())

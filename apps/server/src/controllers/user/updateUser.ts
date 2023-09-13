@@ -1,5 +1,5 @@
 import { UserModel } from '../../models/user.schema'
-import { privateProcedure } from '../../utils/trpc'
+import { privateProcedure } from '../../libs/trpc'
 import { z } from 'zod'
 
 export const updateUser = privateProcedure
