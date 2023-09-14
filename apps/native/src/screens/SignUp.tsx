@@ -49,6 +49,7 @@ const Signup = () => {
         Toast.show({
           type: "success",
           text1: "Success",
+          visibilityTime: 700,
           text2: "Signed up successfully",
         });
         navigation.navigate("login" as never);

@@ -28,7 +28,6 @@ export default function Post({
 }: PostProps) {
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(10);
-  const { setUser } = useCurrentUser();
 
   return (
     <View className="bg-gray-200 rounded-lg overflow-hidden shadow-xl p-4 my-3">
@@ -47,13 +46,7 @@ export default function Post({
             <Text className="text-xs text-gray">4 mins ago</Text>
           </View>
         </View>
-        <EllipsisHorizontalIcon
-          color={colors.gray}
-          onPress={async () => {
-            await TokenProvider.removeItem("user");
-            setUser(null);
-          }}
-        />
+        <EllipsisHorizontalIcon color={colors.gray} onPress={async () => {}} />
       </View>
       {/* // Profile Description */}
       <View className="my-4">

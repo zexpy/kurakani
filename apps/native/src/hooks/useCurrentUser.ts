@@ -1,6 +1,6 @@
 import { TokenProvider, useUserStore } from "@kurakani/core";
 import { IStorageUser } from "./useAuth";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { trpc } from "@libs/trpc";
 import { setToken as saveHeader } from "@libs/api";
 
