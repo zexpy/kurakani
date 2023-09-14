@@ -23,7 +23,7 @@ import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { trpc } from "@libs/trpc";
 
-const LoginScreen = () => {
+const Login = () => {
   const { isLoading, mutate: loginWithEmail } = trpc.loginUser.useMutation();
   const setUser = useUserStore((state) => state.setUser);
 
@@ -49,6 +49,7 @@ const LoginScreen = () => {
 
         Toast.show({
           type: "success",
+          visibilityTime: 700,
           text1: "Success",
           text2: "Logged in successfully",
         });
@@ -115,4 +116,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default Login;
