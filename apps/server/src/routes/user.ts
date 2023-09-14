@@ -1,14 +1,16 @@
 import {
-    loginUser,
-    registerUser,
-    getAllUser,
-    updateUser,
-} from '../controllers/user'
-import { router } from '../libs/trpc'
+  loginUser,
+  registerUser,
+  getAllUser,
+  updateUser,
+  getUserById,
+} from "../controllers/user";
+import { router } from "../libs/trpc";
 
 export const userRouter = router({
-    getAllUser,
-    registerUser,
-    loginUser,
-    updateUser,
-})
+  getAllUser,
+  registerUser,
+  loginUser,
+  updateUser,
+  getUserById,
+});
