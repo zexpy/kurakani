@@ -43,10 +43,7 @@ const LoginScreen = () => {
   const handleLogin = (data: ILoginCreds) => {
     loginWithEmail(data, {
       onSuccess: async (user) => {
-        // Used for authorization
-        // setToken(user.jwt);
         // @ts-ignore
-        // Setting state
         setUser(user);
         await TokenProvider.setItem("user", JSON.stringify(user));
 

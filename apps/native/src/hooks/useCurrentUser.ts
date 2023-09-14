@@ -2,7 +2,7 @@ import { TokenProvider, useUserStore } from "@kurakani/core";
 import { IStorageUser } from "./useAuth";
 import { useEffect, useState } from "react";
 import { trpc } from "@libs/trpc";
-import { setToken as saveToken } from "@libs/api";
+import { setToken as saveHeader } from "@libs/api";
 
 export const useCurrentUser = () => {
   const [token, setToken] = useState<IStorageUser>();
@@ -16,8 +16,7 @@ export const useCurrentUser = () => {
       ) as IStorageUser;
       if (token?.jwt) {
         setToken(token);
-        saveToken(token.jwt);
-        return;
+        saveHeader(token.jwt);
       }
     };
     getToken();
