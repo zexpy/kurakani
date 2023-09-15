@@ -30,7 +30,7 @@ export default function Post({
   const [likeCount, setLikeCount] = useState(10);
 
   return (
-    <View className="bg-gray-200 rounded-lg overflow-hidden shadow-xl p-4 my-3">
+    <View className="bg-gray-200 rounded-lg overflow-hidden p-4 my-3">
       {/* // Profile */}
       <View className="flex-row justify-between">
         <View className="flex-row items-center gap-2">
