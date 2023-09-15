@@ -5,11 +5,13 @@ import CustomDrawer from "@screens/CustomDrawer";
 import {
   AdjustmentsHorizontalIcon,
   HomeIcon,
+  UserGroupIcon,
   UserPlusIcon,
   UsersIcon,
 } from "react-native-heroicons/outline";
 import colors from "../assets/colors";
 import Toast from "react-native-toast-message";
+import AddFriend from "@screens/AddFriend";
 
 const Drawer = createDrawerNavigator();
 
@@ -34,17 +36,17 @@ const DrawerStack = () => {
           }}
         />
         <Drawer.Screen
+          name="Add Friend"
+          component={AddFriend}
+          options={{
+            drawerIcon: ({ color }) => <UserPlusIcon size={22} color={color} />,
+          }}
+        />
+        <Drawer.Screen
           name="Friends"
           component={FriendRequest}
           options={{
             drawerIcon: ({ color }) => <UsersIcon size={22} color={color} />,
-          }}
-        />
-        <Drawer.Screen
-          name="Friend Request"
-          component={FriendRequest}
-          options={{
-            drawerIcon: ({ color }) => <UserPlusIcon size={22} color={color} />,
           }}
         />
         <Drawer.Screen
