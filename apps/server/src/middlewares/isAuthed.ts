@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { middleware } from "../libs/trpc";
 import { verifyAccessToken } from "../libs/auth";
-import { UserModel } from "../models/user.schema";
+import UserModel from "../models/user.schema";
 
 const isAuthed = () =>
   middleware(async ({ ctx, next }) => {
