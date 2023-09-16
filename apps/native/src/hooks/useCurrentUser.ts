@@ -8,15 +8,17 @@ export const useCurrentUser = () => {
   const [token, setToken] = useState<IStorageUser>();
   const { mutate, isLoading } = trpc.getUserById.useMutation();
   const { user, setUser } = useUserStore();
+  const lastUsedToken = useRef("");
 
   useEffect(() => {
     const getToken = async () => {
       const token = JSON.parse(
         await TokenProvider.getItem("user")
       ) as IStorageUser;
-      if (token?.jwt) {
+      if (token?.jwt && token.jwt !== lastUsedToken.current) {
         setToken(token);
         saveHeader(token.jwt);
+        lastUsedToken.current = token.jwt;
       }
     };
     getToken();
@@ -24,7 +26,7 @@ export const useCurrentUser = () => {
 
   useEffect(() => {
     if (token) {
-      mutate(token.user.id, {
+      mutate(token.user._id, {
         onSuccess: (data) => {
           // @ts-ignore
           setUser(data);

@@ -5,7 +5,7 @@ export interface IStorageUser {
   jwt: string;
   user: {
     email: string;
-    id: string;
+    _id: string;
   };
 }
 
@@ -25,5 +25,5 @@ export const useAuth = () => {
     return { isAuth: false, id: null };
   }
 
-  return { isAuth, id: token.user.id };
+  return { isAuth, id: token.user._id };
 };
