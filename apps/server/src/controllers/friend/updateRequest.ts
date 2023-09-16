@@ -8,6 +8,7 @@ export const updateRequest = privateProcedure
     z.object({
       sender_id: z.string(),
       receiver_id: z.string(),
+      status: z.string(),
     })
   )
   .mutation(async ({ input }) => {
@@ -25,7 +26,7 @@ export const updateRequest = privateProcedure
         ],
       },
       {
-        status: "accepted",
+        status: input.status,
       }
     );
 

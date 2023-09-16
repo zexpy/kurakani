@@ -5,12 +5,10 @@ import CustomDrawer from "@screens/CustomDrawer";
 import {
   AdjustmentsHorizontalIcon,
   HomeIcon,
-  UserPlusIcon,
   UsersIcon,
 } from "react-native-heroicons/outline";
 import colors from "../assets/colors";
 import Toast from "react-native-toast-message";
-import AddFriend from "@screens/AddFriend";
 import FriendSection from "@screens/FriendSection";
 
 const Drawer = createDrawerNavigator();
@@ -33,13 +31,6 @@ const DrawerStack = () => {
           component={Tabs}
           options={{
             drawerIcon: ({ color }) => <HomeIcon size={22} color={color} />,
-          }}
-        />
-        <Drawer.Screen
-          name="Add Friend"
-          component={AddFriend}
-          options={{
-            drawerIcon: ({ color }) => <UserPlusIcon size={22} color={color} />,
           }}
         />
         <Drawer.Screen

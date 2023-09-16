@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
 import Message from "@components/chat/Message";
 import DrawerStack from "./DrawerStack";
+import FriendRequest from "@screens/FriendRequest";
+import colors from "../assets/colors";
 
 const Stack = createNativeStackNavigator();
 const AfterAuth = () => {
@@ -16,6 +18,17 @@ const AfterAuth = () => {
           }}
         />
         <Stack.Screen name="MessageChat" component={Message} />
+        <Stack.Screen
+          name="Friend Request"
+          component={FriendRequest}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: colors.primary,
+            },
+          }}
+        />
       </Stack.Navigator>
       <Toast position="top" />
     </>

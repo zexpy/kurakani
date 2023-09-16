@@ -4,9 +4,10 @@ import {
   getAllUser,
   updateUser,
   getUserById,
+  getFriendRequestById,
 } from "../controllers/user";
 
-import { addFriend, updateRequest } from "../controllers/friend";
+import { addFriend, updateRequest, getFriendById } from "../controllers/friend";
 import { router } from "../libs/trpc";
 
 export const userRouter = router({
@@ -17,4 +18,6 @@ export const userRouter = router({
   getUserById,
   addFriend,
   updateRequest,
+  getFriendById,
+  getFriendRequestById,
 });
