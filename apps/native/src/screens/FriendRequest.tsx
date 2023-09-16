@@ -4,7 +4,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const FriendRequest = ({ route }) => {
   const utils = trpc.useContext();
-  const user = route.params.user;
+  const user = route?.params?.user;
   const { isLoading, data } = trpc.getFriendRequestById.useQuery(
     user._id.toString()
   );
@@ -52,6 +52,10 @@ const FriendRequest = ({ route }) => {
   return (
     <View className="flex justify-between items-center">
       {data.map((people) => {
+        // @ts-ignore  TODO: need to refactor
+        if (user.friends.includes(people.sender_id._id)) {
+          return null;
+        }
         return (
           // @ts-ignore
           <View

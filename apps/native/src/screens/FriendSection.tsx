@@ -86,10 +86,13 @@ const FriendSection = () => {
           />
         </View>
       ) : (
-        <View className="flex justify-center items-center m-10">
+        <View className="flex justify-center items-center m-8">
           <Text className="font-bold text-xl">No friends to show</Text>
           <Text>When you become friends with people on</Text>
-          <Text>Kurakani, they'll appear here.</Text>
+          <View className="flex-row">
+            <Text className="font-bold">Kurakani</Text>
+            <Text>, they'll appear here.</Text>
+          </View>
         </View>
       )}
     </Box>

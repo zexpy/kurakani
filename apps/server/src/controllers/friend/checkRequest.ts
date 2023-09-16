@@ -3,24 +3,19 @@ import { privateProcedure } from "../../libs/trpc";
 import FriendShipModel from "../../models/friendship.schema";
 import { TRPCError } from "@trpc/server";
 
-export const updateRequest = privateProcedure
+export const checkRequest = privateProcedure
     .input(
         z.object({
             sender_id: z.string(),
             receiver_id: z.string(),
-            status: z.string(),
         })
     )
-    .mutation(async ({ input }) => {
-        const friendShip = await FriendShipModel.findOneAndUpdate(
-            {
-                sender_id: input.sender_id,
-                receiver_id: input.receiver_id,
-            },
-            {
-                status: input.status,
-            }
-        );
+    .query(async ({ input }) => {
+        const friendShip = await FriendShipModel.findOne({
+            sender_id: input.sender_id,
+            receiver_id: input.receiver_id,
+            status: { $ne: "accepted" },
+        });
 
         if (!friendShip) {
             throw new TRPCError({
@@ -29,5 +24,5 @@ export const updateRequest = privateProcedure
             });
         }
 
-        return { status: 200 };
+        return { status: friendShip.status };
     });
