@@ -44,7 +44,7 @@ const Login = () => {
     loginWithEmail(data, {
       onSuccess: async (user) => {
         // @ts-ignore
-        setUser(user);
+        setUser(user.user);
         await TokenProvider.setItem("user", JSON.stringify(user));
 
         Toast.show({
