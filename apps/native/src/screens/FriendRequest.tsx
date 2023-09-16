@@ -3,13 +3,16 @@ import { trpc } from "@libs/trpc";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const FriendRequest = ({ route }) => {
-  // const utils = trpc.useContext();
+  const utils = trpc.useContext();
   const user = route.params.user;
   const { isLoading, data } = trpc.getFriendRequestById.useQuery(
     user._id.toString()
   );
-
   const { mutate: handleRequest } = trpc.updateRequest.useMutation();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const acceptRequest = (id: string) => {
     handleRequest(
@@ -20,7 +23,8 @@ const FriendRequest = ({ route }) => {
       },
       {
         onSuccess: () => {
-          // utils.getFriendRequestById.invalidate();
+          utils.getFriendRequestById.invalidate();
+          utils.getFriendById.invalidate();
         },
       }
     );
@@ -35,7 +39,7 @@ const FriendRequest = ({ route }) => {
       },
       {
         onSuccess: () => {
-          // utils.getFriendRequestById.invalidate();
+          utils.getFriendRequestById.invalidate();
         },
       }
     );

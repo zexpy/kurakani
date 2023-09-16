@@ -4,6 +4,7 @@ import Message from "@components/chat/Message";
 import DrawerStack from "./DrawerStack";
 import FriendRequest from "@screens/FriendRequest";
 import colors from "../assets/colors";
+import SuggestFriend from "@screens/SuggestFriend";
 
 const Stack = createNativeStackNavigator();
 const AfterAuth = () => {
@@ -21,6 +22,17 @@ const AfterAuth = () => {
         <Stack.Screen
           name="Friend Request"
           component={FriendRequest}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: colors.primary,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Suggestion"
+          component={SuggestFriend}
           options={{
             headerTitleAlign: "center",
             headerTintColor: "white",

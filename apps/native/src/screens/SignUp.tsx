@@ -29,14 +29,6 @@ const Signup = () => {
   } = useForm<ISignUpCreds>({
     resolver: zodResolver(SignUpSchema),
   });
-  // WHY ARE WE USING IT HERE
-  // useEffect(() => {
-  //   const getToken = async () => {
-  //     const token = await AsyncStorage.getItem("token");
-  //     console.log(token);
-  //   };
-  //   getToken();
-  // }, []);
 
   const navigation = useNavigation();
   const handleNavigate = () => {

@@ -9,11 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const FriendSection = () => {
   const { user } = useCurrentUser();
-  console.log(user);
-  const { isLoading, data } = trpc.getFriendById.useQuery(
-    // @ts-ignore
-    user?.user._id?.toString()
-  );
+  const { isLoading, data } = trpc.getFriendById.useQuery(user._id?.toString());
   const [inputSearch, setInputSearch] = useState<string>();
   const navigation = useNavigation();
 
@@ -25,7 +21,13 @@ const FriendSection = () => {
     <Box>
       <Text className="text-lg font-bold mb-1">Friends</Text>
       <View className="flex-row gap-3">
-        <Pressable className="bg-primary p-2 rounded-xl">
+        <Pressable
+          className="bg-primary p-2 rounded-xl"
+          onPress={() =>
+            // @ts-ignore
+            navigation.navigate("Suggestion" as never, { user })
+          }
+        >
           <Text className="text-white">Suggestions</Text>
         </Pressable>
         <Pressable
