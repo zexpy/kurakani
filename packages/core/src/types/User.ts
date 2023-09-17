@@ -24,6 +24,7 @@ export interface IUser {
   gender?: USER_GENDER;
   address?: string;
   phone?: string;
+  profile_pic?: string;
   coverImage?: string;
   friends?: IUser[];
   createdAt: Date;
