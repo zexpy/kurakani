@@ -5,6 +5,7 @@ import BeforeAuth from "./BeforeAuth";
 import { ActivityIndicator, View } from "react-native";
 import colors from "../assets/colors";
 import { NavigationContainer } from "@react-navigation/native";
+import VerifyProileStack from "@screens/UpdateProfile";
 
 const StackNavigator = () => {
   const { user, isLoading } = useCurrentUser();
@@ -19,7 +20,13 @@ const StackNavigator = () => {
 
   return (
     <NavigationContainer>
-      {user ? <AfterAuth /> : <BeforeAuth />}
+      {!user ? (
+        <BeforeAuth />
+      ) : user.fullName ? (
+        <AfterAuth />
+      ) : (
+        <VerifyProileStack />
+      )}
     </NavigationContainer>
   );
 };
