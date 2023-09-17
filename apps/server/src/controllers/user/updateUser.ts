@@ -10,6 +10,7 @@ export const updateUser = privateProcedure
         .object({
           username: z.string(),
           password: z.string(),
+          profile_pic: z.string(),
         })
         .partial(),
     })
