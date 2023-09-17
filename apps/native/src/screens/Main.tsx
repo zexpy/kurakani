@@ -2,6 +2,8 @@ import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import Box from "@components/Box";
 import Post from "@components/Post";
 import { faker } from "@faker-js/faker";
+import { useCurrentUser } from "@hooks/useCurrentUser";
+import Loading from "@components/Loading";
 
 export enum ContentType {
   TEXT = "text",
@@ -9,6 +11,11 @@ export enum ContentType {
 }
 
 const Main = ({ navigation }) => {
+  const { user, isLoading } = useCurrentUser();
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Box>
       <View className="flex flex-row justify-between items-center pb-2">
@@ -16,9 +23,9 @@ const Main = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Image
             source={{
-              uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+              uri: user.profile_pic,
             }}
-            className="h-10 w-10"
+            className="h-10 w-10 rounded-full"
           />
         </TouchableOpacity>
       </View>

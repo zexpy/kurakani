@@ -18,6 +18,7 @@ import Toast from "react-native-toast-message";
 
 const CustomDrawer = (props: DrawerContentComponentProps) => {
   const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state) => state.user);
   return (
     <View className="flex-1">
       <DrawerContentScrollView
@@ -30,9 +31,9 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
         >
           <Image
             source={{
-              uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+              uri: user.profile_pic,
             }}
-            className="h-10 w-10 rounded-[40] mt-20"
+            className="h-12 w-12 mt-20 rounded-full"
           />
           <View className="flex flex-row"></View>
         </ImageBackground>

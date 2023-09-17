@@ -41,6 +41,7 @@ const FriendSection = () => {
         </Pressable>
       </View>
       <View className=" mt-3 border-t border-[#ccc]"></View>
+
       {data.friends.length > 0 ? (
         <View>
           <TextInput
@@ -53,12 +54,12 @@ const FriendSection = () => {
             className="h-[92vh] mt-2"
             data={data.friends}
             // @ts-ignore
-            keyExtractor={(item) => item?._id.toString()}
+            keyExtractor={(user) => user?._id.toString()}
             renderItem={({ item }) => {
               if (
                 inputSearch &&
                 // @ts-ignore
-                !item?.username
+                !item?.fullName
                   .toUpperCase()
                   .includes(inputSearch.trim().toUpperCase())
               ) {
@@ -71,9 +72,11 @@ const FriendSection = () => {
               return (
                 <FriendCard
                   // @ts-ignore
-                  name={item.username}
+                  name={item.fullName}
                   // @ts-ignore
                   email={item.email}
+                  // @ts-ignore
+                  profile_pic={item.profile_pic}
                   btnLabel="Message"
                   handleSubmit={() =>
                     // @ts-ignore
