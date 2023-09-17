@@ -1,8 +1,6 @@
 import Loading from "@components/Loading";
 import { useCurrentUser } from "@hooks/useCurrentUser";
 import { IUpadateCreds, UpdateSchema } from "@kurakani/core";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import colors from "../assets/colors";
 import { useForm, Controller } from "react-hook-form";
 import { ActivityIndicator, Text, TextInput } from "react-native";
 import { Image, View } from "react-native";
@@ -11,28 +9,9 @@ import { TouchableOpacity } from "react-native";
 import { trpc } from "@libs/trpc";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
+import { CLOUDINARY_API, UPLOAD_PRESET, CLOUD_NAME } from "@env";
 
-const Stack = createNativeStackNavigator();
-
-const VerifyProileStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Verify Profile"
-        component={UpdateProfile}
-        options={{
-          headerTitleAlign: "center",
-          headerTintColor: "white",
-          headerStyle: {
-            backgroundColor: colors.primary,
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
-const UpdateProfile = () => {
+const VerifyProfile = () => {
   const { user, setUser, isLoading } = useCurrentUser();
   const {
     control,
@@ -69,10 +48,10 @@ const UpdateProfile = () => {
   const hanleUploadCloudinary = async (image: any) => {
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("upload_preset", process.env.UPLOAD_PRESET);
-    formData.append("cloud_name", process.env.CLOUD_NAME);
+    formData.append("upload_preset", UPLOAD_PRESET);
+    formData.append("cloud_name", CLOUD_NAME);
     try {
-      const response = await fetch(process.env.CLOUDINARY_API, {
+      const response = await fetch(CLOUDINARY_API, {
         method: "POST",
         body: formData,
       });
@@ -218,7 +197,7 @@ const UpdateProfile = () => {
           onPress={handleSubmit(updateSubmit)}
         >
           {updateLoading ? (
-            <ActivityIndicator size="large" color="white" />
+            <ActivityIndicator size="small" color="white" className="py-2" />
           ) : (
             <Text className="text-center text-white font-bold py-2">
               Update Profile
@@ -230,4 +209,4 @@ const UpdateProfile = () => {
   );
 };
 
-export default VerifyProileStack;
+export default VerifyProfile;
