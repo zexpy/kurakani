@@ -65,15 +65,15 @@ const FriendRequest = ({ route }) => {
             <View className="flex flex-row items-center gap-3 justify-center">
               <Image
                 source={{
-                  uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                  uri: user.profile_pic,
                 }}
-                className="h-20 w-20"
+                className="h-20 w-20 rounded-full"
               />
               <View>
                 <Text className="font-bold py-1 text-lg">
                   {
                     // @ts-ignore
-                    people.sender_id.username
+                    people.sender_id?.fullName
                   }
                 </Text>
                 <View className="flex-row gap-3">

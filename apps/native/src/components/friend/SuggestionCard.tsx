@@ -11,6 +11,7 @@ interface ISuggestionCardProps {
 }
 const SuggestionCard = ({ people, user }: ISuggestionCardProps) => {
   const utils = trpc.useContext();
+  console.log(user);
 
   const { data } = trpc.checkRequest.useQuery({
     sender_id: user._id,
@@ -71,12 +72,12 @@ const SuggestionCard = ({ people, user }: ISuggestionCardProps) => {
       <View className={`flex flex-row items-center gap-3`}>
         <Image
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+            uri: people.profile_pic,
           }}
-          className="h-12 w-12"
+          className="h-14 w-14 rounded-full bg-gray-400"
         />
         <View>
-          <Text className="font-bold">{people.username}</Text>
+          <Text className="font-bold">{people.fullName}</Text>
           <Text className="text-xs text-gray">{people.email}</Text>
         </View>
       </View>

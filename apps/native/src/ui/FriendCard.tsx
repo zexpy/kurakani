@@ -4,6 +4,7 @@ interface IFriendCardProps {
   isLoading?: boolean;
   name: string;
   email: string;
+  profile_pic: string;
   btnLabel?: string;
   handleSubmit?: () => void;
 }
@@ -11,6 +12,7 @@ const FriendCard = ({
   isLoading,
   name,
   email,
+  profile_pic,
   btnLabel,
   handleSubmit,
 }: IFriendCardProps) => {
@@ -19,13 +21,13 @@ const FriendCard = ({
       <View className={`flex flex-row items-center gap-3`}>
         <Image
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+            uri: profile_pic,
           }}
-          className="h-12 w-12"
+          className="h-14 w-14 rounded-full"
         />
         <View>
           <Text className="font-bold">{name}</Text>
-          <Text className="text-xs text-gray">{email}</Text>
+          <Text className="text-xs text-gray py-[1]">{email}</Text>
         </View>
       </View>
       {btnLabel && (
