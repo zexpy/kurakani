@@ -22,7 +22,7 @@ const StackNavigator = () => {
     <NavigationContainer>
       {!user ? (
         <BeforeAuth />
-      ) : user.fullName ? (
+      ) : user?.fullName && user?.profile_pic ? (
         <AfterAuth />
       ) : (
         <VerifyProileStack />
