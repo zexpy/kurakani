@@ -17,6 +17,9 @@ const AddPost = ({ navigation }) => {
     const { isLoading, mutate: mutatePost } = trpc.addPost.useMutation()
 
     const handleSubmit = () => {
+        if (!image && !text) {
+            return
+        }
         mutatePost(
             {
                 image,
@@ -27,6 +30,7 @@ const AddPost = ({ navigation }) => {
                 onSuccess: () => {
                     setText(undefined)
                     setImage(undefined)
+                    setPlaceHolder("What's on your mind?")
                     navigation.goBack()
                     Toast.show({
                         type: "success",
@@ -94,7 +98,13 @@ const AddPost = ({ navigation }) => {
                         <Text className="px-2 text-[15px] text-grayish">Photo/Video</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity className="bg-primary p-2 w-24 rounded-lg" onPress={handleSubmit}>
+                <TouchableOpacity
+                    className={`${
+                        !image && !text ? "bg-gray-600" : "bg-primary"
+                    } p-2 w-24 rounded-lg`}
+                    onPress={handleSubmit}
+                    activeOpacity={0.8}
+                >
                     {isLoading ? (
                         <ActivityIndicator size="small" color="white" />
                     ) : (

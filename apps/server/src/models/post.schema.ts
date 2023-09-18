@@ -2,10 +2,7 @@ import mongoose, { InferSchemaType, Types } from "mongoose"
 
 const postSchema = new mongoose.Schema(
     {
-        content: {
-            type: String,
-            required: true,
-        },
+        content: String,
         image: String,
         likes_count: Number,
         user_id: {
