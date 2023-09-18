@@ -9,6 +9,7 @@ import { trpc } from "@libs/trpc"
 import { Toast } from "react-native-toast-message/lib/src/Toast"
 
 const AddPost = ({ navigation }) => {
+    const utils = trpc.useContext()
     const { user } = useCurrentUser()
     const [text, setText] = useState<string>()
     const [placeholder, setPlaceHolder] = useState<string>("What's on your mind?")
@@ -32,6 +33,7 @@ const AddPost = ({ navigation }) => {
                     setImage(undefined)
                     setPlaceHolder("What's on your mind?")
                     navigation.goBack()
+                    utils.getPostByUserId.invalidate()
                     Toast.show({
                         type: "success",
                         text1: "Post upload",
