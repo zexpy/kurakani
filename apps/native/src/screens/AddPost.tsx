@@ -34,6 +34,7 @@ const AddPost = ({ navigation }) => {
                     setPlaceHolder("What's on your mind?")
                     navigation.goBack()
                     utils.getPostByUserId.invalidate()
+                    utils.getPhotoByUserId.invalidate()
                     Toast.show({
                         type: "success",
                         text1: "Post upload",

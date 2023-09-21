@@ -9,11 +9,6 @@ import { RouterOutput } from "types/user"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 dayjs.extend(relativeTime)
-/* declare module "dayjs" {
-    interface Dayjs {
-        fromNow(withoutSuffix?: boolean): string
-    }
-} */
 
 type PostByUserIdOutput = RouterOutput["getPostByUserId"]
 interface IPostCard {
@@ -27,13 +22,13 @@ const PostCard = ({ user, post }: IPostCard) => {
     })
 
     return (
-        <View className="m-2 mt-4 bg-gray-200 rounded-2xl p-4" key={post._id.toString()}>
-            <View className="flex-row gap-4 items-center">
+        <View className="p-4" key={post._id.toString()}>
+            <View className="flex-row gap-3 items-center">
                 <Image
                     source={{
                         uri: user.profile_pic,
                     }}
-                    className="w-16 h-16 rounded-full"
+                    className="w-12 h-12 rounded-full"
                     alt="Profile Image"
                 />
                 <View>
@@ -41,15 +36,17 @@ const PostCard = ({ user, post }: IPostCard) => {
                     <Text className="text-xs text-gray">{dayjs(user.createdAt).fromNow()}</Text>
                 </View>
             </View>
-            <Text className="py-2 px-2 text-lg font-normal">{post.content}</Text>
-            {post.image && (
-                <Image
-                    source={{
-                        uri: post.image,
-                    }}
-                    className="w-full h-64 rounded-xl object-cover"
-                />
-            )}
+            <View>
+                <Text className="text-lg p-2">{post.content?.trim()}</Text>
+                {Boolean(post.image) && (
+                    <Image
+                        source={{
+                            uri: post.image,
+                        }}
+                        className="h-64 rounded-lg mb-2"
+                    />
+                )}
+            </View>
             <View className="flex-row px-2 gap-2 mt-[1px] items-center">
                 <TouchableOpacity
                     activeOpacity={0.7}
@@ -71,6 +68,7 @@ const PostCard = ({ user, post }: IPostCard) => {
                     <Text className="font-bold text-sm px-1">{post.comments.length} comment</Text>
                 </TouchableOpacity>
             </View>
+            <View className="border border-t-grayish opacity-20 mt-3" />
         </View>
     )
 }

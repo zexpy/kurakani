@@ -69,6 +69,7 @@ export default function Profile() {
                 animationEnabled={true}
                 initialLayout={{ width: layout.width }}
                 renderTabBar={renderTabBar}
+                style={{ backgroundColor: "white" }}
             />
         </>
     )

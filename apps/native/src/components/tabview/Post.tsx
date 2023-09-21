@@ -11,7 +11,6 @@ const Post = () => {
     if (isLoading) {
         return <Loading />
     }
-    console.log(data[0])
     return (
         <FlatList
             keyExtractor={(item) => item._id.toString()}
