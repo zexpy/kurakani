@@ -6,6 +6,7 @@ import {
     getUserById,
     getFriendRequestById,
     verifyProfile,
+    getPhotoByUserId,
 } from "../controllers/user"
 
 import { addFriend, updateRequest, getFriendById, checkRequest } from "../controllers/friend"
@@ -23,4 +24,5 @@ export const userRouter = router({
     getFriendRequestById,
     checkRequest,
     verifyProfile,
+    getPhotoByUserId,
 })

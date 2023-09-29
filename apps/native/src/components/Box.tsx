@@ -8,7 +8,14 @@ interface BoxProps {
 const Box: React.FC<BoxProps> = ({ children }) => {
     return (
         <SafeAreaView>
-            <View className="p-6">{children}</View>
+            <View
+                className="p-6"
+                style={{
+                    backgroundColor: "white",
+                }}
+            >
+                {children}
+            </View>
         </SafeAreaView>
     )
 }

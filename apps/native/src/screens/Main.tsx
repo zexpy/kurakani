@@ -11,11 +11,8 @@ export enum ContentType {
 }
 
 const Main = ({ navigation }) => {
-    const { user, isLoading } = useCurrentUser()
+    const { user } = useCurrentUser()
 
-    if (isLoading) {
-        return <Loading />
-    }
     return (
         <Box>
             <View className="flex flex-row justify-between items-center pb-2">
