@@ -1,6 +1,6 @@
-import mongoose, { Schema, Types } from "mongoose";
-import { InferSchemaType } from "mongoose";
-import UserModel from "./user.schema";
+import mongoose, { Schema, Types } from "mongoose"
+import { InferSchemaType } from "mongoose"
+import UserModel from "./user.schema"
 
 enum FriendShipStatus {
     PENDING = "pending",
@@ -28,19 +28,19 @@ const friendShipSchema = new Schema(
 
     {
         timestamps: true,
-    }
-);
+    },
+)
 
-type FriendShip = InferSchemaType<typeof friendShipSchema>;
+type FriendShip = InferSchemaType<typeof friendShipSchema>
 
-friendShipSchema.post("findOneAndUpdate", async function(docs) {
-    const before = docs;
+friendShipSchema.post("findOneAndUpdate", async function (docs) {
+    const before = docs
     if (!before) {
-        return;
+        return
     }
-    const { sender_id, receiver_id } = docs;
+    const { sender_id, receiver_id } = docs
     // @ts-ignore
-    const after = this.getUpdate().$set;
+    const after = this.getUpdate().$set
 
     if (before.status === "pending" && after.status === "accepted") {
         // UPDATE THE USER DATABASE
@@ -51,20 +51,14 @@ friendShipSchema.post("findOneAndUpdate", async function(docs) {
             UserModel.findByIdAndUpdate(receiver_id, {
                 $push: { friends: sender_id },
             }),
-        ]);
+        ])
     }
 
-    if (
-        before.status === "pending" &&
-        ["cancel", "rejected"].includes(after.status)
-    ) {
-        await FriendShipModel.findByIdAndDelete(docs._id);
+    if (before.status === "pending" && ["cancel", "rejected"].includes(after.status)) {
+        await FriendShipModel.findByIdAndDelete(docs._id)
     }
-});
+})
 
-const FriendShipModel = mongoose.model<FriendShip>(
-    "FriendShip",
-    friendShipSchema
-);
+const FriendShipModel = mongoose.model<FriendShip>("FriendShip", friendShipSchema)
 
-export default FriendShipModel;
+export default FriendShipModel

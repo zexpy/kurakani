@@ -1,6 +1,6 @@
 import Loading from "@components/Loading"
 import { useCurrentUser } from "@hooks/useCurrentUser"
-import { IUpadateCreds, UpdateSchema } from "@kurakani/core"
+import { IUpadateCreds, TokenProvider, UpdateSchema } from "@kurakani/core"
 import { useForm, Controller } from "react-hook-form"
 import { ActivityIndicator, Text, TextInput } from "react-native"
 import { Image, View } from "react-native"
@@ -8,11 +8,30 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { TouchableOpacity } from "react-native"
 import { trpc } from "@libs/trpc"
 import * as ImagePicker from "expo-image-picker"
-import { useState } from "react"
+import { useLayoutEffect, useState } from "react"
 import { CLOUDINARY_API, UPLOAD_PRESET, CLOUD_NAME } from "@env"
+import { ArrowLeftOnRectangleIcon } from "react-native-heroicons/outline"
 
-const VerifyProfile = () => {
+const VerifyProfile = ({ navigation }) => {
     const { user, setUser, isLoading } = useCurrentUser()
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <TouchableOpacity
+                    onPress={async () => {
+                        await TokenProvider.removeItem("user")
+                        setUser(null)
+                    }}
+                    className="p-5"
+                >
+                    <View className="flex flex-row gap-3 items-center">
+                        <ArrowLeftOnRectangleIcon size={22} color="white" />
+                    </View>
+                </TouchableOpacity>
+            ),
+        })
+    }, [navigation])
+
     const {
         control,
         handleSubmit,

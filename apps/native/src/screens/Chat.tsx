@@ -1,11 +1,8 @@
-import { FlatList, Text, View } from 'react-native'
-import {
-    ChevronDownIcon,
-    MagnifyingGlassIcon,
-} from 'react-native-heroicons/outline'
-import Box from '@components/Box'
-import MessageProfile from '@components/chat/MessageProfile'
-import { faker } from '@faker-js/faker'
+import { FlatList, Text, View } from "react-native"
+import { ChevronDownIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline"
+import Box from "@components/Box"
+import MessageProfile from "@components/chat/MessageProfile"
+import { faker } from "@faker-js/faker"
 
 export default function Chat() {
     return (

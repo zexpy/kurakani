@@ -3,6 +3,7 @@ import Box from "@components/Box"
 import Post from "@components/Post"
 import { faker } from "@faker-js/faker"
 import { useCurrentUser } from "@hooks/useCurrentUser"
+import Loading from "@components/Loading"
 
 export enum ContentType {
     TEXT = "text",

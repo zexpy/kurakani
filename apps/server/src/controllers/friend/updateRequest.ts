@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { privateProcedure } from "../../libs/trpc";
-import FriendShipModel from "../../models/friendship.schema";
-import { TRPCError } from "@trpc/server";
+import { z } from "zod"
+import { privateProcedure } from "../../libs/trpc"
+import FriendShipModel from "../../models/friendship.schema"
+import { TRPCError } from "@trpc/server"
 
 export const updateRequest = privateProcedure
     .input(
@@ -9,7 +9,7 @@ export const updateRequest = privateProcedure
             sender_id: z.string(),
             receiver_id: z.string(),
             status: z.string(),
-        })
+        }),
     )
     .mutation(async ({ input }) => {
         const friendShip = await FriendShipModel.findOneAndUpdate(
@@ -19,15 +19,15 @@ export const updateRequest = privateProcedure
             },
             {
                 status: input.status,
-            }
-        );
+            },
+        )
 
         if (!friendShip) {
             throw new TRPCError({
                 code: "NOT_FOUND",
                 message: "NOT FOUND",
-            });
+            })
         }
 
-        return { status: 200 };
-    });
+        return { status: 200 }
+    })

@@ -38,6 +38,7 @@ userSchema.pre("save", async function() {
     this.password = hashPassword
 })
 
+                            
 userSchema.methods.isValidPassword = async function(password: string) {
     return await bcrypt.compare(password, this.password)
 }
