@@ -1,8 +1,8 @@
-import { z } from 'zod'
-import { privateProcedure } from '../../libs/trpc'
-import PostModel from '../../models/post.schema'
-import CommentModel from '../../models/comment.schema'
-import { TRPCError } from '@trpc/server'
+import { z } from "zod"
+import { privateProcedure } from "../../libs/trpc"
+import PostModel from "../../models/post.schema"
+import CommentModel from "../../models/comment.schema"
+import { TRPCError } from "@trpc/server"
 
 export const addComment = privateProcedure
     .input(
@@ -10,9 +10,9 @@ export const addComment = privateProcedure
             userId: z.string(),
             postId: z.string(),
             content: z.string(),
-        })
+        }),
     )
-    .mutation(async opts => {
+    .mutation(async (opts) => {
         try {
             const findPost = await PostModel.findById(opts.input.postId)
 
@@ -28,7 +28,7 @@ export const addComment = privateProcedure
             return newComment
         } catch (error) {
             throw new TRPCError({
-                code: 'BAD_REQUEST',
+                code: "BAD_REQUEST",
                 message: (error as Error).message,
             })
         }

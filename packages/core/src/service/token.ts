@@ -1,18 +1,18 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 class TokenService {
-  setItem = async (key: string, value: string) => {
-    await AsyncStorage.setItem(key, value);
-  };
+    setItem = async (key: string, value: string) => {
+        await AsyncStorage.setItem(key, value)
+    }
 
-  getItem = async (key: string) => {
-    const value = await AsyncStorage.getItem(key);
-    return value;
-  };
+    getItem = async (key: string) => {
+        const value = await AsyncStorage.getItem(key)
+        return value
+    }
 
-  removeItem = async (key: string) => {
-    await AsyncStorage.removeItem(key);
-  };
+    removeItem = async (key: string) => {
+        await AsyncStorage.removeItem(key)
+    }
 }
-const TokenProvider = new TokenService();
-export { TokenProvider };
+const TokenProvider = new TokenService()
+export { TokenProvider }
