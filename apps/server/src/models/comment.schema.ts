@@ -1,24 +1,24 @@
-import mongoose, { InferSchemaType, Types } from "mongoose";
+import mongoose, { InferSchemaType, Types } from "mongoose"
 
 const commentSchema = new mongoose.Schema(
-  {
-    postId: {
-      type: Types.ObjectId,
-      ref: "Posts",
+    {
+        postId: {
+            type: Types.ObjectId,
+            ref: "Posts",
+        },
+        userId: {
+            type: Types.ObjectId,
+            ref: "Users",
+        },
+        content: {
+            type: String,
+            required: true,
+        },
     },
-    userId: {
-      type: Types.ObjectId,
-      ref: "Users",
-    },
-    content: {
-      type: String,
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
+    { timestamps: true },
+)
 
-type Comment = InferSchemaType<typeof commentSchema>;
-const CommentModel = mongoose.model<Comment>("Comment", commentSchema);
+type Comment = InferSchemaType<typeof commentSchema>
+const CommentModel = mongoose.model<Comment>("Comment", commentSchema)
 
-export default CommentModel;
+export default CommentModel

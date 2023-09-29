@@ -1,6 +1,6 @@
-import { httpBatchLink } from '@trpc/client'
-import { trpc } from './trpc'
-import getBaseUrl from '../helper/url'
+import { httpBatchLink } from "@trpc/client"
+import { trpc } from "./trpc"
+import getBaseUrl from "../helper/url"
 
 let token: string
 export const setToken = (newToken: string) => {

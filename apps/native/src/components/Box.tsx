@@ -1,5 +1,5 @@
-import { View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 interface BoxProps {
     children: React.ReactNode
