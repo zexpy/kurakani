@@ -20,14 +20,10 @@ export const accessChat = privateProcedure
             .populate("users", "-password")
             .populate("latestMessage")
 
-        console.log(isChat)
-
         const chatting = await UserModel.populate(isChat, {
             path: "latestMessage.sender",
             select: "username profile_pic email",
         })
-
-        console.log(chatting)
 
         if (chatting.length > 0) {
             return chatting[0]
