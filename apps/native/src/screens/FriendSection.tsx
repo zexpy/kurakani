@@ -6,15 +6,39 @@ import { FlatList, Pressable, Text, TextInput, View } from "react-native"
 import { useState } from "react"
 import { useCurrentUser } from "@hooks/useCurrentUser"
 import { useNavigation } from "@react-navigation/native"
+import { getSender } from "../helper/user"
 
 const FriendSection = () => {
     const { user } = useCurrentUser()
     const { isLoading, data } = trpc.getFriendById.useQuery(user._id?.toString())
     const [inputSearch, setInputSearch] = useState<string>()
     const navigation = useNavigation()
+    const { mutate: accessChatMutate } = trpc.accessChat.useMutation()
 
     if (isLoading) {
         return <Loading />
+    }
+
+    const handleMessage = (id: string) => {
+        console.log(id)
+        accessChatMutate(
+            {
+                user_id: id,
+            },
+            {
+                onSuccess: (data) => {
+                    // @ts-ignore
+                    const sender = getSender(user, data?.users)
+                    // @ts-ignore
+                    navigation.navigate("MessageChat", {
+                        sender,
+                        chatId: data._id.toString(),
+                        user,
+                    })
+                },
+            },
+        )
+        //@ts-ignore
     }
 
     return (
@@ -78,10 +102,8 @@ const FriendSection = () => {
                                     // @ts-ignore
                                     profile_pic={item.profile_pic}
                                     btnLabel="Message"
-                                    handleSubmit={() =>
-                                        // @ts-ignore
-                                        navigation.navigate("MessageChat" as never, { user: item })
-                                    }
+                                    // @ts-ignore
+                                    handleSubmit={() => handleMessage(item?._id.toString())}
                                 />
                             )
                         }}

@@ -1,41 +1,53 @@
-import { faker } from "@faker-js/faker"
-
+import Loading from "@components/Loading"
+import { trpc } from "@libs/trpc"
 import React, { useState, useCallback, useEffect, useLayoutEffect } from "react"
 import { GiftedChat } from "react-native-gifted-chat"
 
 export function Message({ navigation, route }) {
-    const [messages, setMessages] = useState([])
+    const utils = trpc.useContext()
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: route.params.user.username,
+            title: route.params.sender.username,
         })
     })
-
+    const [messages, setMessages] = useState([])
+    const chatId = route.params.chatId
+    const user = route.params.user
+    const { isLoading, data } = trpc.allMessage.useQuery(chatId)
+    const { mutate: sendMessageMutate } = trpc.sendMessage.useMutation()
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: faker.lorem.words(),
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: faker.person.fullName(),
-                    avatar: faker.image.avatar(),
-                },
-            },
-        ])
-    }, [])
+        if (!data) {
+            return
+        }
+        setMessages(data)
+    }, [data])
 
     const onSend = useCallback((messages = []) => {
-        setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+        sendMessageMutate(
+            {
+                content: messages[0].text,
+                chat_id: chatId,
+            },
+            {
+                onSuccess: () => {
+                    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+                },
+            },
+        )
+        utils.allMessage.invalidate()
+        utils.getChats.invalidate()
     }, [])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <GiftedChat
             messages={messages}
             onSend={(messages) => onSend(messages)}
             user={{
-                _id: 1,
+                _id: user._id.toString(),
             }}
         />
     )
