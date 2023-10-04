@@ -1,27 +1,28 @@
 import { View, Text, Image } from "react-native"
-import {
-    ChatBubbleOvalLeftIcon,
-    EllipsisHorizontalIcon,
-    HeartIcon,
-} from "react-native-heroicons/solid"
+import { EllipsisHorizontalIcon } from "react-native-heroicons/solid"
 import colors from "../assets/colors"
 import { useState } from "react"
-import { faker } from "@faker-js/faker"
-import { TokenProvider } from "@kurakani/core"
-import { useCurrentUser } from "@hooks/useCurrentUser"
 import Toast from "react-native-toast-message"
+import { ChatBubbleOvalLeftEllipsisIcon, HandThumbUpIcon } from "react-native-heroicons/outline"
+import { HandThumbUpIcon as HandThumbUpSolid } from "react-native-heroicons/solid"
+import { TouchableOpacity } from "react-native-gesture-handler"
+
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+import { trpc } from "@libs/trpc"
+dayjs.extend(customParseFormat)
 
 interface PostProps {
-    contentType: string
-    description?: string
-    imageUrl?: string
-    name: string
-    avatar: string
+    post: any
 }
 
-export default function Post({ contentType, description, imageUrl, name, avatar }: PostProps) {
-    const [like, setLike] = useState(false)
-    const [likeCount, setLikeCount] = useState(10)
+export default function Post({ post }: PostProps) {
+    const [status, setStatus] = useState({
+        like: { count: post.likes_count, state: false },
+        comment: { count: 0, state: false },
+    })
+
+    const { mutate: updateMutation } = trpc.updatePost.useMutation()
 
     return (
         <View className="bg-gray-200 rounded-lg overflow-hidden p-4 my-3">
@@ -30,71 +31,74 @@ export default function Post({ contentType, description, imageUrl, name, avatar 
                 <View className="flex-row items-center gap-2">
                     <Image
                         source={{
-                            uri: avatar,
+                            uri: post.user_id.profile_pic,
                         }}
                         className="w-10 h-10 rounded-full "
                         alt="Profile Image"
                     />
                     <View>
-                        <Text className="font-bold">{name}</Text>
-                        <Text className="text-xs text-gray">4 mins ago</Text>
+                        <Text className="font-bold">{post.user_id.fullName}</Text>
+                        <Text className="text-xs text-gray">{dayjs(post.createdAt).fromNow()}</Text>
                     </View>
                 </View>
-                <EllipsisHorizontalIcon color={colors.gray} onPress={async () => {}} />
+                <EllipsisHorizontalIcon color={colors.gray} onPress={async () => { }} />
             </View>
             {/* // Profile Description */}
-            <View className="my-4">
-                {contentType === "image" ? (
+            <View className="mt-4 mb-3">
+                {Boolean(post.image) ? (
                     <Image
                         source={{
-                            uri: imageUrl,
+                            uri: post.image,
                         }}
                         className="w-full h-96 mb-3 rounded-md object-contain"
                         alt="SOmething"
                     />
                 ) : null}
-                {description ? <Text className="leading-5">{description}</Text> : null}
+                {Boolean(post.content) ? <Text className="leading-5">{post.content}</Text> : null}
             </View>
-            {/* //Likes */}
-            <View className="flex-row items-center gap-12">
-                <View className="relative">
-                    {Array.from(Array(3)).map((_, index) => (
-                        <Image
-                            key={`image-${index}`}
-                            source={{
-                                uri: faker.image.avatarLegacy(),
-                            }}
-                            className={`w-7 h-7 rounded-full 
-                            left-${index * 4} 
-                            ${index > 0 && "absolute"}`}
-                            alt="Profile Image"
-                        />
-                    ))}
-                </View>
-                <Text className="text-xs text-gray font-medium">
-                    {faker.person.firstName()} and other likes it
-                </Text>
-            </View>
-            <View className="flex-row mt-5 justify-start items-center gap-3">
-                <View className="flex-row gap-3 items-center">
-                    <HeartIcon
-                        size={35}
-                        color={like ? colors.primary : colors.grayLight}
-                        onPress={() => {
-                            setLike((prev) => !prev)
-                            setLikeCount((prev) => prev + 1)
-                        }}
-                        className="text-grayish"
+            <View className="flex-row px-2 gap-2 mt-[1px] items-center">
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    className="flex-row items-center mx-6"
+                    onPress={() => {
+                        setStatus((prev) => ({
+                            ...prev,
+                            like: {
+                                count: prev.like.state ? prev.like.count - 1 : prev.like.count + 1,
+                                state: !prev.like.state,
+                            },
+                        }))
+                        updateMutation(
+                            {
+                                post_id: post._id,
+                                updates: {
+                                    likes_count: status.like.state
+                                        ? status.like.count - 1
+                                        : status.like.count + 1,
+                                },
+                            },
+                            {
+                                onSuccess: (data) => {
+                                    console.log(data)
+                                },
+                            },
+                        )
+                    }}
+                >
+                    {status.like.state ? (
+                        <HandThumbUpSolid color={colors.primary} size={30} />
+                    ) : (
+                        <HandThumbUpIcon color={colors.gray} size={30} />
+                    )}
+                    <Text className="font-bold text-sm px-1"> {status.like.count} like</Text>
+                </TouchableOpacity>
+                <TouchableOpacity className="flex-row items-center" onPress={() => { }}>
+                    <ChatBubbleOvalLeftEllipsisIcon
+                        color={status.comment ? colors.primary : colors.gray}
+                        size={30}
                     />
-                    <Text className="text-bold">{likeCount} likes</Text>
-                </View>
-                <View className="flex-row gap-3 items-center">
-                    <ChatBubbleOvalLeftIcon
-                        size={35}
-                        color={like ? colors.primary : colors.grayLight}
-                    />
-                    <Text className="text-bold">{likeCount} comments</Text>
-                </View>
+                    <Text className="font-bold text-sm px-1">{post.comments.length} comment</Text>
+                </TouchableOpacity>
             </View>
             <Toast />
         </View>

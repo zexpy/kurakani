@@ -1,8 +1,8 @@
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native"
 import Box from "@components/Box"
 import Post from "@components/Post"
-import { faker } from "@faker-js/faker"
 import { useCurrentUser } from "@hooks/useCurrentUser"
+import { trpc } from "@libs/trpc"
 import Loading from "@components/Loading"
 
 export enum ContentType {
@@ -12,6 +12,12 @@ export enum ContentType {
 
 const Main = ({ navigation }) => {
     const { user } = useCurrentUser()
+    // @ts-ignore
+    const { data, isLoading } = trpc.getFriendPost.useQuery(user?.friends)
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <Box>
@@ -28,16 +34,9 @@ const Main = ({ navigation }) => {
             </View>
             {/* <Story /> */}
             <FlatList
-                data={Array.from(Array(10))}
-                renderItem={() => (
-                    <Post
-                        name={faker.person.fullName()}
-                        avatar={faker.image.avatarLegacy()}
-                        description={faker.lorem.sentences()}
-                        contentType={ContentType.IMAGE}
-                        imageUrl={faker.image.url()}
-                    />
-                )}
+                data={data}
+                keyExtractor={(post) => post._id}
+                renderItem={({ item }) => <Post post={item} />}
                 showsVerticalScrollIndicator={false}
             />
         </Box>
