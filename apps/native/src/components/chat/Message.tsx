@@ -1,10 +1,11 @@
 import Loading from "@components/Loading"
+import socket from "@libs/socket"
 import { trpc } from "@libs/trpc"
 import React, { useState, useCallback, useEffect, useLayoutEffect } from "react"
 import { GiftedChat } from "react-native-gifted-chat"
 
 export function Message({ navigation, route }) {
-    const utils = trpc.useContext()
+    // const utils = trpc.useContext()
     useLayoutEffect(() => {
         navigation.setOptions({
             title: route.params.sender.username,
@@ -16,6 +17,24 @@ export function Message({ navigation, route }) {
     const { isLoading, data } = trpc.allMessage.useQuery(chatId)
     const { mutate: sendMessageMutate } = trpc.sendMessage.useMutation()
     useEffect(() => {
+        socket.emit("join chat", chatId)
+    }, [])
+
+    useEffect(() => {
+        socket.on("message received", (messages) => {
+            sendMessageMutate({
+                content: messages[0].text,
+                chat_id: chatId,
+            })
+            setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+        })
+
+        return () => {
+            socket.off("message received")
+        }
+    }, [])
+
+    useEffect(() => {
         if (!data) {
             return
         }
@@ -23,19 +42,7 @@ export function Message({ navigation, route }) {
     }, [data])
 
     const onSend = useCallback((messages = []) => {
-        sendMessageMutate(
-            {
-                content: messages[0].text,
-                chat_id: chatId,
-            },
-            {
-                onSuccess: () => {
-                    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
-                },
-            },
-        )
-        utils.allMessage.invalidate()
-        utils.getChats.invalidate()
+        socket.emit("send message", { messages: messages, chatId })
     }, [])
 
     if (isLoading) {

@@ -31,15 +31,14 @@ const userSchema = new mongoose.Schema(
     { timestamps: true },
 )
 
-type User = InferSchemaType<typeof userSchema>
+export type User = InferSchemaType<typeof userSchema>
 
-userSchema.pre("save", async function() {
+userSchema.pre("save", async function () {
     const hashPassword = await bcrypt.hash(this.password, 10)
     this.password = hashPassword
 })
 
-                            
-userSchema.methods.isValidPassword = async function(password: string) {
+userSchema.methods.isValidPassword = async function (password: string) {
     return await bcrypt.compare(password, this.password)
 }
 
