@@ -1,3 +1,6 @@
 export * from "./addPost"
 export * from "./getPostById"
 export * from "./getPostByUserId"
+export * from "./getFriendPost"
+export * from "./updatePost"
+export * from "./updateLike"

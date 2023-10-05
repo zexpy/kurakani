@@ -33,7 +33,7 @@ const PostCard = ({ user, post }: IPostCard) => {
                 />
                 <View>
                     <Text className="font-bold text-lg">{user.fullName}</Text>
-                    <Text className="text-xs text-gray">{dayjs(user.createdAt).fromNow()}</Text>
+                    <Text className="text-xs text-gray">{dayjs(post.createdAt).fromNow()}</Text>
                 </View>
             </View>
             <View>
@@ -60,7 +60,7 @@ const PostCard = ({ user, post }: IPostCard) => {
                     )}
                     <Text className="font-bold text-sm px-1"> {post.likes_count ?? 0} like</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center" onPress={() => {}}>
+                <TouchableOpacity className="flex-row items-center" onPress={() => { }}>
                     <ChatBubbleOvalLeftEllipsisIcon
                         color={status.comment ? colors.primary : colors.gray}
                         size={30}
