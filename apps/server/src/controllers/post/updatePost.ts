@@ -13,11 +13,9 @@ export const updatePost = privateProcedure
         }),
     )
     .mutation(async (opts) => {
-        console.log(opts.input.updates)
         const post = await PostModel.findByIdAndUpdate(opts.input.post_id, opts.input.updates, {
             new: true,
         })
 
-        console.log(post)
         return post
     })

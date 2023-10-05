@@ -5,6 +5,7 @@ import {
     getPostByUserId,
     getPostById,
     getFriendPost,
+    updateLike,
 } from "../controllers/post"
 
 export const postRouter = router({
@@ -13,4 +14,5 @@ export const postRouter = router({
     getPostById,
     getFriendPost,
     updatePost,
+    updateLike,
 })

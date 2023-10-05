@@ -4,14 +4,16 @@ const postSchema = new mongoose.Schema(
     {
         content: String,
         image: String,
-        /* likes: {
-            type: Types.ObjectId,
-            ref: "User",
-        }, */
-        likes_count: {
-            type: Number,
-            default: 0,
-        },
+        likes: [
+            {
+                type: Types.ObjectId,
+                ref: "User",
+            },
+        ],
+        // likes_count: {
+        //     type: Number,
+        //     default: 0,
+        // },
         user_id: {
             type: Types.ObjectId,
             ref: "User",
