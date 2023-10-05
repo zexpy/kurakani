@@ -24,7 +24,6 @@ const Photos = () => {
     if (isLoading) {
         return <Loading />
     }
-    console.log(data)
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View className="flex-row justify-center flex-wrap">

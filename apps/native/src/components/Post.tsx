@@ -6,23 +6,25 @@ import Toast from "react-native-toast-message"
 import { ChatBubbleOvalLeftEllipsisIcon, HandThumbUpIcon } from "react-native-heroicons/outline"
 import { HandThumbUpIcon as HandThumbUpSolid } from "react-native-heroicons/solid"
 import { TouchableOpacity } from "react-native-gesture-handler"
-
 import dayjs from "dayjs"
-import customParseFormat from "dayjs/plugin/customParseFormat"
 import { trpc } from "@libs/trpc"
-dayjs.extend(customParseFormat)
+import { useCurrentUser } from "@hooks/useCurrentUser"
+import { RouterOutput } from "types/user"
 
+type OutPost = RouterOutput["getFriendPost"]
 interface PostProps {
-    post: any
+    post: OutPost[0]
 }
 
 export default function Post({ post }: PostProps) {
-    const [status, setStatus] = useState({
-        like: { count: post.likes_count, state: false },
-        comment: { count: 0, state: false },
-    })
+    const utils = trpc.useContext()
+    const { user } = useCurrentUser()
 
-    const { mutate: updateMutation } = trpc.updatePost.useMutation()
+    const [status, setStatus] = useState({
+        like: { count: post.likes.length, state: post.likes.includes(user._id) },
+        comment: { count: post.comments.length },
+    })
+    const { mutate: updateMutation } = trpc.updateLike.useMutation()
 
     return (
         <View className="bg-gray-200 rounded-lg overflow-hidden p-4 my-3">
@@ -41,7 +43,7 @@ export default function Post({ post }: PostProps) {
                         <Text className="text-xs text-gray">{dayjs(post.createdAt).fromNow()}</Text>
                     </View>
                 </View>
-                <EllipsisHorizontalIcon color={colors.gray} onPress={async () => { }} />
+                <EllipsisHorizontalIcon color={colors.gray} onPress={async () => {}} />
             </View>
             {/* // Profile Description */}
             <View className="mt-4 mb-3">
@@ -54,7 +56,7 @@ export default function Post({ post }: PostProps) {
                         alt="SOmething"
                     />
                 ) : null}
-                {Boolean(post.content) ? <Text className="leading-5">{post.content}</Text> : null}
+                {Boolean(post.content) ? <Text className="text-lg">{post.content}</Text> : null}
             </View>
             <View className="flex-row px-2 gap-2 mt-[1px] items-center">
                 <TouchableOpacity
@@ -71,15 +73,10 @@ export default function Post({ post }: PostProps) {
                         updateMutation(
                             {
                                 post_id: post._id,
-                                updates: {
-                                    likes_count: status.like.state
-                                        ? status.like.count - 1
-                                        : status.like.count + 1,
-                                },
                             },
                             {
-                                onSuccess: (data) => {
-                                    console.log(data)
+                                onSuccess: () => {
+                                    utils.getFriendPost.invalidate()
                                 },
                             },
                         )
@@ -90,14 +87,15 @@ export default function Post({ post }: PostProps) {
                     ) : (
                         <HandThumbUpIcon color={colors.gray} size={30} />
                     )}
-                    <Text className="font-bold text-sm px-1"> {status.like.count} like</Text>
+                    <Text className="font-bold text-sm px-1">
+                        {status.like.count} like{status.like.count > 0 && "s"}
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center" onPress={() => { }}>
-                    <ChatBubbleOvalLeftEllipsisIcon
-                        color={status.comment ? colors.primary : colors.gray}
-                        size={30}
-                    />
-                    <Text className="font-bold text-sm px-1">{post.comments.length} comment</Text>
+                <TouchableOpacity className="flex-row items-center" onPress={() => {}}>
+                    <ChatBubbleOvalLeftEllipsisIcon color={colors.primary} size={30} />
+                    <Text className="font-bold text-sm px-1">
+                        {post.comments.length} comment{post.comments.length > 0 && "s"}
+                    </Text>
                 </TouchableOpacity>
             </View>
             <Toast />
