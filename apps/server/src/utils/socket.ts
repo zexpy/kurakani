@@ -32,6 +32,21 @@ export const initializeSocket = (
                 socket.to(chatId).emit("message received", messages)
             },
         )
+
+        socket.on(
+            "typing",
+            ({
+                chatId,
+                user,
+                typing,
+            }: {
+                chatId: string
+                user: Record<string, any>
+                typing: boolean
+            }) => {
+                socket.to(chatId).emit("typing received", user, typing)
+            },
+        )
     })
 
     return io

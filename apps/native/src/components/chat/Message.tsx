@@ -2,8 +2,8 @@ import Loading from "@components/Loading"
 import socket from "@libs/socket"
 import { trpc } from "@libs/trpc"
 import React, { useState, useCallback, useEffect, useLayoutEffect } from "react"
+import { Text } from "react-native"
 import { GiftedChat } from "react-native-gifted-chat"
-
 export function Message({ navigation, route }) {
     // const utils = trpc.useContext()
     useLayoutEffect(() => {
@@ -16,21 +16,32 @@ export function Message({ navigation, route }) {
     const user = route.params.user
     const { isLoading, data } = trpc.allMessage.useQuery(chatId)
     const { mutate: sendMessageMutate } = trpc.sendMessage.useMutation()
+
+    const [typing, setTyping] = useState({
+        name: "",
+        state: false,
+    })
     useEffect(() => {
         socket.emit("join chat", chatId)
     }, [])
 
     useEffect(() => {
         socket.on("message received", (messages) => {
-            sendMessageMutate({
-                content: messages[0].text,
-                chat_id: chatId,
-            })
             setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+        })
+
+        socket.on("typing received", (user: Record<string, any>, typing: boolean) => {
+            console.log("typing r", typing)
+            setTyping({
+                name: user.username,
+                state: typing,
+            })
         })
 
         return () => {
             socket.off("message received")
+
+            socket.off("typing received")
         }
     }, [])
 
@@ -43,7 +54,33 @@ export function Message({ navigation, route }) {
 
     const onSend = useCallback((messages = []) => {
         socket.emit("send message", { messages: messages, chatId })
+        sendMessageMutate(
+            {
+                content: messages[0].text,
+                chat_id: chatId,
+            },
+            {
+                onSuccess: () => {
+                    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+                },
+            },
+        )
     }, [])
+
+    const renderFooter = () => {
+        if (!typing.state) {
+            return null
+        }
+        return <Text className="p-2 px-4">{typing.name} is typing</Text>
+    }
+
+    const handleTyping = (text?: string) => {
+        if (!text) {
+            socket.emit("typing", { chatId, user: user, typing: false })
+            return
+        }
+        socket.emit("typing", { chatId, user: user, typing: true })
+    }
 
     if (isLoading) {
         return <Loading />
@@ -52,10 +89,12 @@ export function Message({ navigation, route }) {
     return (
         <GiftedChat
             messages={messages}
+            onInputTextChanged={handleTyping}
             onSend={(messages) => onSend(messages)}
             user={{
                 _id: user._id.toString(),
             }}
+            renderFooter={renderFooter}
         />
     )
 }

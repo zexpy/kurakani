@@ -6,6 +6,8 @@ export interface ServerToClientEvents {
     connected: () => void
 
     "message received": (message: any) => void
+
+    "typing received": (user: Record<string, any>, typing: boolean) => void
 }
 
 export interface ClientToServerEvents {
@@ -13,6 +15,15 @@ export interface ClientToServerEvents {
     setup: (user: any) => void
     "join chat": (chatId: string) => void
     "send message": (message: any) => void
+    typing: ({
+        chatId,
+        user,
+        typing,
+    }: {
+        chatId: string
+        user: Record<string, any>
+        typing: boolean
+    }) => void
 }
 
 export interface InterServerEvents {

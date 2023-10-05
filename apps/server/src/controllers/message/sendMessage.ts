@@ -13,6 +13,7 @@ export const sendMessage = privateProcedure
     )
     .mutation(async (opts) => {
         const id = opts.ctx.user?._id
+        console.log(opts.ctx.user, opts.input)
         let message = await MessageModel.create({
             sender: id,
             content: opts.input.content,
