@@ -10,8 +10,10 @@ export const getChats = privateProcedure.query(async (opts) => {
         .populate("latestMessage")
         .sort({ updatedAt: -1 })
 
-    return await UserModel.populate(chats, {
+    const result = await UserModel.populate(chats, {
         path: "latestMessage.sender",
         select: "username profile_pic email",
     })
+
+    return result
 })

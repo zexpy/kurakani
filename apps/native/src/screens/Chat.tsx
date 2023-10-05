@@ -1,10 +1,15 @@
-import { FlatList, Text, View } from "react-native"
-import { ChevronDownIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline"
+import { Text, View, ScrollView } from "react-native"
+import { ChevronDownIcon } from "react-native-heroicons/outline"
 import Box from "@components/Box"
 import MessageProfile from "@components/chat/MessageProfile"
-import { faker } from "@faker-js/faker"
+import { trpc } from "@libs/trpc"
+import Loading from "@components/Loading"
 
 export default function Chat() {
+    const { data, isLoading } = trpc.getChats.useQuery()
+    if (isLoading) {
+        return <Loading />
+    }
     return (
         <Box>
             <View className="p-2 flex-row justify-between items-center">
@@ -12,21 +17,12 @@ export default function Chat() {
                     <Text className="font-bold text-2xl">Messages</Text>
                     <ChevronDownIcon size={24} color="black" />
                 </View>
-                <MagnifyingGlassIcon size={24} color="black" />
             </View>
-            <FlatList
-                data={Array.from(Array(20))}
-                renderItem={() => (
-                    <MessageProfile
-                        user={{
-                            fullName: faker.person.fullName(),
-                            avatar: faker.image.avatarLegacy(),
-                        }}
-                        message={faker.lorem.words()}
-                    />
-                )}
-                showsVerticalScrollIndicator={false}
-            />
+            <ScrollView showsVerticalScrollIndicator={false}>
+                {data.map((user) => (
+                    <MessageProfile user={user} key={user._id.toString()} />
+                ))}
+            </ScrollView>
         </Box>
     )
 }

@@ -14,6 +14,7 @@ import { ArrowLeftOnRectangleIcon } from "react-native-heroicons/outline"
 
 const VerifyProfile = ({ navigation }) => {
     const { user, setUser, isLoading } = useCurrentUser()
+    const [imageLoading, setImageLoading] = useState<boolean>(false)
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -87,6 +88,10 @@ const VerifyProfile = ({ navigation }) => {
                     onSuccess: () => {
                         //TODO: IF NEEDED: setUser(result)
                         setImage(data.secure_url)
+                        setImageLoading(false)
+                    },
+                    onError: () => {
+                        setImageLoading(false)
                     },
                 },
             )
@@ -99,6 +104,7 @@ const VerifyProfile = ({ navigation }) => {
         try {
             // const permissions =
             //   await ImagePicker.requestMediaLibraryPermissionsAsync();
+            setImageLoading(true)
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
@@ -213,7 +219,7 @@ const VerifyProfile = ({ navigation }) => {
                     className={`mt-4 ${isDirty ? "bg-primary" : "bg-gray-600"} w-36 rounded-md`}
                     onPress={handleSubmit(updateSubmit)}
                 >
-                    {updateLoading ? (
+                    {updateLoading || imageLoading ? (
                         <ActivityIndicator size="small" color="white" className="py-2" />
                     ) : (
                         <Text className="text-center text-white font-bold py-2">

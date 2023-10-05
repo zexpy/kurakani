@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse, Server as HttpServer } from "http"
 import { instrument } from "@socket.io/admin-ui"
 import { Server } from "socket.io"
-import { ClientToServerEvents, ServerToClientEvents } from "@kurakani/core"
+import { ClientToServerEvents, ServerToClientEvents, GiftedMessage } from "@kurakani/core"
 
 export const initializeSocket = (
     httpServer: HttpServer<typeof IncomingMessage, typeof ServerResponse>,
@@ -20,6 +20,33 @@ export const initializeSocket = (
 
     io.on("connection", (socket) => {
         console.log(`✔: ${socket.id} just connected!`)
+
+        socket.on("join chat", (chatId: string) => {
+            console.log(`Room Joined: ${chatId}`)
+            socket.join(chatId)
+        })
+
+        socket.on(
+            "send message",
+            ({ messages, chatId }: { messages: GiftedMessage; chatId: string }) => {
+                socket.to(chatId).emit("message received", messages)
+            },
+        )
+
+        socket.on(
+            "typing",
+            ({
+                chatId,
+                user,
+                typing,
+            }: {
+                chatId: string
+                user: Record<string, any>
+                typing: boolean
+            }) => {
+                socket.to(chatId).emit("typing received", user, typing)
+            },
+        )
     })
 
     return io

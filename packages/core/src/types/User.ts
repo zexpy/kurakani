@@ -54,3 +54,12 @@ export interface IFriendRequest {
     status: FRIEND_REQUEST_STATUS
     // lifecycle make the IUser Friend entity updated when status get accepted
 }
+
+export interface GiftedMessage {
+    _id: string
+    createdAt: string
+    text: string
+    user: {
+        _id: string
+    }
+}
