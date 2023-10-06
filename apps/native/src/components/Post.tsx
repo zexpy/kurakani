@@ -60,7 +60,7 @@ export default function Post({ post, user }: PostProps) {
     }
 
     return (
-        <View className="bg-gray-200 rounded-lg overflow-hidden p-4 my-3">
+        <View className="bg-gray-100 rounded-lg overflow-hidden p-3 my-2">
             {/* // Profile */}
             <View className="flex-row justify-between">
                 <View className="flex-row items-center gap-2">

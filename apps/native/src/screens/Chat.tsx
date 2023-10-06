@@ -1,28 +1,50 @@
-import { Text, View, ScrollView } from "react-native"
+import { Text, View } from "react-native"
 import { ChevronDownIcon } from "react-native-heroicons/outline"
-import Box from "@components/Box"
 import MessageProfile from "@components/chat/MessageProfile"
 import { trpc } from "@libs/trpc"
 import Loading from "@components/Loading"
+import { FlatList } from "react-native-gesture-handler"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useState, useCallback } from "react"
+import { RefreshControl } from "react-native"
 
 export default function Chat() {
-    const { data, isLoading } = trpc.getChats.useQuery()
+    const { data, isLoading, refetch } = trpc.getChats.useQuery()
+    const [isRefreshing, setIsRefreshing] = useState(false)
+    const handleRefresh = useCallback(() => {
+        setIsRefreshing(true)
+        refetch()
+        setTimeout(() => {
+            setIsRefreshing(false)
+        }, 1000)
+    }, [isRefreshing])
+
     if (isLoading) {
         return <Loading />
     }
     return (
-        <Box>
-            <View className="p-2 flex-row justify-between items-center">
-                <View className="flex-row items-center">
+        <SafeAreaView
+            className="p-3"
+            style={{
+                backgroundColor: "#fff",
+                height: "100%",
+            }}
+        >
+            <View className="py-2 flex-row justify-between items-center">
+                <View className="flex-row items-center gap-2">
                     <Text className="font-bold text-2xl">Messages</Text>
-                    <ChevronDownIcon size={24} color="black" />
+                    <ChevronDownIcon size={20} color="black" />
                 </View>
             </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {data.map((user) => (
-                    <MessageProfile user={user} key={user._id.toString()} />
-                ))}
-            </ScrollView>
-        </Box>
+            <FlatList
+                data={data}
+                renderItem={({ item }) => <MessageProfile user={item} />}
+                keyExtractor={(item) => item._id.toString()}
+                refreshControl={
+                    <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+                }
+                showsVerticalScrollIndicator={false}
+            />
+        </SafeAreaView>
     )
 }
