@@ -1,11 +1,11 @@
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native"
-import Box from "@components/Box"
 import Post from "@components/Post"
 import { useCurrentUser } from "@hooks/useCurrentUser"
 import { trpc } from "@libs/trpc"
 import Loading from "@components/Loading"
 import { RefreshControl } from "react-native"
 import { useState, useCallback } from "react"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export enum ContentType {
     TEXT = "text",
@@ -31,7 +31,13 @@ const Main = ({ navigation }) => {
     }
 
     return (
-        <Box>
+        <SafeAreaView
+            style={{
+                backgroundColor: "#fff",
+                height: "100%",
+            }}
+            className="p-5"
+        >
             <View className="flex flex-row justify-between items-center pb-2">
                 <Text className="text-xl font-bold">Latest Posts</Text>
                 <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -49,12 +55,11 @@ const Main = ({ navigation }) => {
                 keyExtractor={(post) => post._id}
                 renderItem={({ item }) => <Post post={item} user={user} />}
                 showsVerticalScrollIndicator={false}
-                className="mb-20"
                 refreshControl={
                     <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
                 }
             />
-        </Box>
+        </SafeAreaView>
     )
 }
 

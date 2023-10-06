@@ -41,7 +41,6 @@ const SuggestFriend = ({ route }) => {
                 keyExtractor={(item) => item._id.toString()}
                 renderItem={({ item }) => <SuggestionCard people={item} user={user} />}
                 showsVerticalScrollIndicator={false}
-                className="mb-20"
                 refreshControl={
                     <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
                 }

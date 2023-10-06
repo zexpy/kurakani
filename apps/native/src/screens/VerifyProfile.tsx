@@ -11,9 +11,11 @@ import * as ImagePicker from "expo-image-picker"
 import { useLayoutEffect, useState } from "react"
 import { CLOUDINARY_API, UPLOAD_PRESET, CLOUD_NAME } from "@env"
 import { ArrowLeftOnRectangleIcon } from "react-native-heroicons/outline"
+import { Toast } from "react-native-toast-message/lib/src/Toast"
 
 const VerifyProfile = ({ navigation }) => {
     const { user, setUser, isLoading } = useCurrentUser()
+
     const [imageLoading, setImageLoading] = useState<boolean>(false)
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -38,7 +40,12 @@ const VerifyProfile = ({ navigation }) => {
         handleSubmit,
         formState: { errors, isDirty },
     } = useForm<IUpadateCreds>({
-        defaultValues: user,
+        defaultValues: {
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            email: user?.email,
+            address: user?.address,
+        },
         resolver: zodResolver(UpdateSchema),
     })
 
@@ -51,6 +58,14 @@ const VerifyProfile = ({ navigation }) => {
     }
 
     const updateSubmit = (data: IUpadateCreds) => {
+        if (!image) {
+            Toast.show({
+                type: "error",
+                text1: "Please upload your profile picture",
+                visibilityTime: 2000,
+                position: "top",
+            })
+        }
         mutate(
             {
                 id: user._id.toString(),
@@ -60,6 +75,10 @@ const VerifyProfile = ({ navigation }) => {
                 onSuccess: (data) => {
                     // @ts-ignore
                     setUser(data)
+                },
+
+                onError: () => {
+                    setImageLoading(false)
                 },
             },
         )
@@ -77,6 +96,7 @@ const VerifyProfile = ({ navigation }) => {
             })
 
             const data = await response.json()
+            setImage(data.secure_url)
             uploadImageMutate(
                 {
                     id: user._id.toString(),
@@ -87,7 +107,6 @@ const VerifyProfile = ({ navigation }) => {
                 {
                     onSuccess: () => {
                         //TODO: IF NEEDED: setUser(result)
-                        setImage(data.secure_url)
                         setImageLoading(false)
                     },
                     onError: () => {
@@ -124,111 +143,113 @@ const VerifyProfile = ({ navigation }) => {
     }
 
     return (
-        <View className="m-12 flex justify-center items-center">
-            <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={handleUploadImage}
-                className="bg-gray-300 rounded-full"
-            >
-                <Image
-                    style={{
-                        borderWidth: 0.5,
-                    }}
-                    alt="UPLOAD IMAGE"
-                    source={{
-                        uri: image,
-                    }}
-                    className={`h-40 w-40 rounded-full`}
-                />
-            </TouchableOpacity>
-            <Text className="mt-2 text-xl font-bold">Upload Image</Text>
-            <View>
-                <View className="pt-4 flex-row gap-4 mb-4">
-                    <View>
-                        <Controller
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field: { onChange, value } }) => (
-                                <TextInput
-                                    placeholder="First Name"
-                                    value={value}
-                                    onChangeText={onChange}
-                                    editable={user.lastName ? false : true}
-                                    className={`border-[1px] ${
-                                        errors.firstName ? "border-red" : "border-gray-300"
-                                    } p-2 w-40 rounded-lg text-grayish`}
-                                />
-                            )}
-                            name="firstName"
-                        />
-                    </View>
-                    <View>
-                        <Controller
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field: { onChange, value } }) => (
-                                <TextInput
-                                    value={value}
-                                    placeholder="Last Name"
-                                    onChangeText={onChange}
-                                    editable={user.lastName ? false : true}
-                                    className={`border-[1px] ${
-                                        errors.lastName ? "border-red" : "border-gray-300"
-                                    } p-2 w-40 rounded-lg text-grayish`}
-                                />
-                            )}
-                            name="lastName"
-                        />
-                    </View>
-                </View>
-                <Controller
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, value } }) => (
-                        <TextInput
-                            value={value}
-                            placeholder="Email"
-                            onChangeText={onChange}
-                            editable={value ? false : true}
-                            className={`border-[1px] ${
-                                errors.email ? "border-red" : "border-gray-300"
-                            } p-2 rounded-lg text-grayish`}
-                        />
-                    )}
-                    name="email"
-                />
-                <Controller
-                    rules={{ required: true }}
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                        <TextInput
-                            value={value}
-                            placeholder="City, Country"
-                            onChangeText={onChange}
-                            keyboardType="email-address"
-                            className={`border-[1px] ${
-                                errors.address ? "border-red" : "border-gray-300"
-                            }  p-2 rounded-lg text-grayish text-sm mt-4`}
-                        />
-                    )}
-                    name="address"
-                />
+        <>
+            <View className="m-12 flex justify-center items-center">
                 <TouchableOpacity
-                    activeOpacity={0.8}
-                    disabled={!isDirty}
-                    className={`mt-4 ${isDirty ? "bg-primary" : "bg-gray-600"} w-36 rounded-md`}
-                    onPress={handleSubmit(updateSubmit)}
+                    activeOpacity={0.7}
+                    onPress={handleUploadImage}
+                    className="border-2 border-rose-300 rounded-full p-1"
                 >
-                    {updateLoading || imageLoading ? (
-                        <ActivityIndicator size="small" color="white" className="py-2" />
-                    ) : (
-                        <Text className="text-center text-white font-bold py-2">
-                            Update Profile
-                        </Text>
-                    )}
+                    <Image
+                        style={{
+                            borderWidth: 0.5,
+                        }}
+                        alt="UPLOAD IMAGE"
+                        source={{
+                            uri: image,
+                        }}
+                        className={`h-40 w-40 rounded-full`}
+                    />
                 </TouchableOpacity>
+                <View>
+                    <View className="pt-4 flex-row gap-4 mb-4">
+                        <View>
+                            <Controller
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextInput
+                                        placeholder="First Name"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        editable={user.lastName ? false : true}
+                                        className={`border-[1px] ${
+                                            errors.firstName ? "border-red" : "border-gray-300"
+                                        } p-2 w-40 rounded-lg text-grayish`}
+                                    />
+                                )}
+                                name="firstName"
+                            />
+                        </View>
+                        <View>
+                            <Controller
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextInput
+                                        value={value}
+                                        placeholder="Last Name"
+                                        onChangeText={onChange}
+                                        editable={user.lastName ? false : true}
+                                        className={`border-[1px] ${
+                                            errors.lastName ? "border-red" : "border-gray-300"
+                                        } p-2 w-40 rounded-lg text-grayish`}
+                                    />
+                                )}
+                                name="lastName"
+                            />
+                        </View>
+                    </View>
+                    <Controller
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                value={value}
+                                placeholder="Email"
+                                onChangeText={onChange}
+                                editable={value ? false : true}
+                                className={`border-[1px] ${
+                                    errors.email ? "border-red" : "border-gray-300"
+                                } p-2 rounded-lg text-grayish`}
+                            />
+                        )}
+                        name="email"
+                    />
+                    <Controller
+                        rules={{ required: true }}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                value={value}
+                                placeholder="City, Country"
+                                onChangeText={onChange}
+                                keyboardType="email-address"
+                                className={`border-[1px] ${
+                                    errors.address ? "border-red" : "border-gray-300"
+                                }  p-2 rounded-lg text-grayish text-sm mt-4`}
+                            />
+                        )}
+                        name="address"
+                    />
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        disabled={!isDirty}
+                        className={`mt-4 ${isDirty ? "bg-primary" : "bg-gray-600"} w-36 rounded-md`}
+                        onPress={handleSubmit(updateSubmit)}
+                    >
+                        {updateLoading || imageLoading ? (
+                            <ActivityIndicator size="small" color="white" className="py-2" />
+                        ) : (
+                            <Text className="text-center text-white font-bold py-2">
+                                Update Profile
+                            </Text>
+                        )}
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+            <Toast />
+        </>
     )
 }
 

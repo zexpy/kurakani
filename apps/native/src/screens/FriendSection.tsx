@@ -1,4 +1,3 @@
-import Box from "@components/Box"
 import Loading from "@components/Loading"
 import { trpc } from "@libs/trpc"
 import FriendCard from "../ui/FriendCard"
@@ -7,6 +6,7 @@ import { useState } from "react"
 import { useCurrentUser } from "@hooks/useCurrentUser"
 import { useNavigation } from "@react-navigation/native"
 import { getSender } from "../helper/user"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 const FriendSection = () => {
     const { user } = useCurrentUser()
@@ -40,7 +40,13 @@ const FriendSection = () => {
     }
 
     return (
-        <Box>
+        <SafeAreaView
+            style={{
+                backgroundColor: "#fff",
+                height: "100%",
+            }}
+            className="p-5"
+        >
             <Text className="text-lg font-bold mb-1">Friends</Text>
             <View className="flex-row gap-3">
                 <Pressable
@@ -109,7 +115,7 @@ const FriendSection = () => {
                     </View>
                 </View>
             )}
-        </Box>
+        </SafeAreaView>
     )
 }
 

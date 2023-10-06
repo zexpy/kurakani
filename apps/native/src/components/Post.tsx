@@ -76,7 +76,7 @@ export default function Post({ post, user }: PostProps) {
                             source={{
                                 uri: post.user_id.profile_pic,
                             }}
-                            className="w-10 h-10 rounded-full "
+                            className="w-12 h-12 rounded-full "
                             alt="Profile Image"
                         />
                     </TouchableOpacity>
