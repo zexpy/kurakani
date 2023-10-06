@@ -38,6 +38,7 @@ const Main = ({ navigation }) => {
                 keyExtractor={(post) => post._id}
                 renderItem={({ item }) => <Post post={item} />}
                 showsVerticalScrollIndicator={false}
+                className="mb-20"
             />
         </Box>
     )

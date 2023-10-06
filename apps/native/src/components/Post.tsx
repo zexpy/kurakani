@@ -19,7 +19,6 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
     const { user } = useCurrentUser()
-
     const [status, setStatus] = useState({
         like: { count: post.likes.length, state: post.likes.includes(user._id) },
         comment: { count: post.comments.length },
@@ -93,6 +92,7 @@ export default function Post({ post }: PostProps) {
                         // @ts-ignore
                         navigation.navigate("Comment" as never, {
                             post,
+                            user,
                         })
                     }}
                 >
