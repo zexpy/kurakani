@@ -58,9 +58,9 @@ const PostCard = ({ user, post }: IPostCard) => {
                     ) : (
                         <HandThumbUpIcon color={colors.gray} size={30} />
                     )}
-                    <Text className="font-bold text-sm px-1"> {post.likes_count ?? 0} like</Text>
+                    <Text className="font-bold text-sm px-1"> {post.likes.length ?? 0} like</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center" onPress={() => { }}>
+                <TouchableOpacity className="flex-row items-center" onPress={() => {}}>
                     <ChatBubbleOvalLeftEllipsisIcon
                         color={status.comment ? colors.primary : colors.gray}
                         size={30}

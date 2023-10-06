@@ -46,7 +46,7 @@ const Comment = ({ route }) => {
                     placeholder="Add a new comment ..."
                     value={comment}
                     onChangeText={setComment}
-                    // autoFocus
+                    autoFocus
                 />
                 <TouchableOpacity
                     activeOpacity={0.8}

@@ -36,7 +36,7 @@ const Main = ({ navigation }) => {
             <FlatList
                 data={data}
                 keyExtractor={(post) => post._id}
-                renderItem={({ item }) => <Post post={item} />}
+                renderItem={({ item }) => <Post post={item} user={user} />}
                 showsVerticalScrollIndicator={false}
                 className="mb-20"
             />

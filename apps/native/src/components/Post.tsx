@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native"
+import { View, Text, Image, Pressable } from "react-native"
 import { EllipsisHorizontalIcon } from "react-native-heroicons/solid"
 import colors from "../assets/colors"
 import { useState } from "react"
@@ -6,21 +6,23 @@ import Toast from "react-native-toast-message"
 import { ChatBubbleOvalLeftEllipsisIcon, HandThumbUpIcon } from "react-native-heroicons/outline"
 import { HandThumbUpIcon as HandThumbUpSolid } from "react-native-heroicons/solid"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import dayjs from "dayjs"
 import { trpc } from "@libs/trpc"
-import { useCurrentUser } from "@hooks/useCurrentUser"
 import { RouterOutput } from "types/user"
 import { useNavigation } from "@react-navigation/native"
+import { IUser } from "@kurakani/core"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+dayjs.extend(relativeTime)
 
 type OutPost = RouterOutput["getFriendPost"]
 interface PostProps {
     post: OutPost[0]
+    user: IUser
 }
 
-export default function Post({ post }: PostProps) {
-    const { user } = useCurrentUser()
+export default function Post({ post, user }: PostProps) {
     const [status, setStatus] = useState({
-        like: { count: post.likes.length, state: post.likes.includes(user._id) },
+        like: { count: post?.likes.length ?? 0, state: post.likes.includes(user._id) },
         comment: { count: post.comments.length },
     })
     const { mutate: updateMutation } = trpc.updateLike.useMutation()
@@ -44,13 +46,22 @@ export default function Post({ post }: PostProps) {
             {/* // Profile */}
             <View className="flex-row justify-between">
                 <View className="flex-row items-center gap-2">
-                    <Image
-                        source={{
-                            uri: post.user_id.profile_pic,
+                    <Pressable
+                        onPress={() => {
+                            // @ts-ignore
+                            navigation.navigate("Profile" as never, {
+                                user: post.user_id,
+                            })
                         }}
-                        className="w-10 h-10 rounded-full "
-                        alt="Profile Image"
-                    />
+                    >
+                        <Image
+                            source={{
+                                uri: post.user_id.profile_pic,
+                            }}
+                            className="w-10 h-10 rounded-full "
+                            alt="Profile Image"
+                        />
+                    </Pressable>
                     <View>
                         <Text className="font-bold">{post.user_id.fullName}</Text>
                         <Text className="text-xs text-gray">{dayjs(post.createdAt).fromNow()}</Text>
