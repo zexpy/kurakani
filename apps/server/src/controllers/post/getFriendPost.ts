@@ -5,6 +5,12 @@ import PostModel from "../../models/post.schema"
 export const getFriendPost = privateProcedure.input(z.array(z.string())).query(async (opts) => {
     const posts = await PostModel.find({ _id: { $ne: opts.ctx.user?._id } })
         .populate("user_id")
+        .populate({
+            path: "comments",
+            populate: {
+                path: "user_id",
+            },
+        })
         .sort({ createdAt: -1 })
     let newPost: any[] = []
     posts.map((post) => {

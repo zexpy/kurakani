@@ -10,6 +10,7 @@ import dayjs from "dayjs"
 import { trpc } from "@libs/trpc"
 import { useCurrentUser } from "@hooks/useCurrentUser"
 import { RouterOutput } from "types/user"
+import { useNavigation } from "@react-navigation/native"
 
 type OutPost = RouterOutput["getFriendPost"]
 interface PostProps {
@@ -17,7 +18,6 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
-    const utils = trpc.useContext()
     const { user } = useCurrentUser()
 
     const [status, setStatus] = useState({
@@ -25,6 +25,20 @@ export default function Post({ post }: PostProps) {
         comment: { count: post.comments.length },
     })
     const { mutate: updateMutation } = trpc.updateLike.useMutation()
+    const navigation = useNavigation()
+
+    const handleLike = async () => {
+        setStatus((prev) => ({
+            ...prev,
+            like: {
+                count: prev.like.state ? prev.like.count - 1 : prev.like.count + 1,
+                state: !prev.like.state,
+            },
+        }))
+        updateMutation({
+            post_id: post._id,
+        })
+    }
 
     return (
         <View className="bg-gray-200 rounded-lg overflow-hidden p-4 my-3">
@@ -62,25 +76,7 @@ export default function Post({ post }: PostProps) {
                 <TouchableOpacity
                     activeOpacity={0.7}
                     className="flex-row items-center mx-6"
-                    onPress={() => {
-                        setStatus((prev) => ({
-                            ...prev,
-                            like: {
-                                count: prev.like.state ? prev.like.count - 1 : prev.like.count + 1,
-                                state: !prev.like.state,
-                            },
-                        }))
-                        updateMutation(
-                            {
-                                post_id: post._id,
-                            },
-                            {
-                                onSuccess: () => {
-                                    utils.getFriendPost.invalidate()
-                                },
-                            },
-                        )
-                    }}
+                    onPress={handleLike}
                 >
                     {status.like.state ? (
                         <HandThumbUpSolid color={colors.primary} size={30} />
@@ -91,7 +87,15 @@ export default function Post({ post }: PostProps) {
                         {status.like.count} like{status.like.count > 0 && "s"}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center" onPress={() => {}}>
+                <TouchableOpacity
+                    className="flex-row items-center"
+                    onPress={() => {
+                        // @ts-ignore
+                        navigation.navigate("Comment" as never, {
+                            post,
+                        })
+                    }}
+                >
                     <ChatBubbleOvalLeftEllipsisIcon color={colors.primary} size={30} />
                     <Text className="font-bold text-sm px-1">
                         {post.comments.length} comment{post.comments.length > 0 && "s"}

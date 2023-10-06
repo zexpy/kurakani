@@ -20,7 +20,6 @@ const FriendSection = () => {
     }
 
     const handleMessage = (id: string) => {
-        console.log(id)
         accessChatMutate(
             {
                 user_id: id,
