@@ -2,13 +2,13 @@ import mongoose, { InferSchemaType, Types } from "mongoose"
 
 const commentSchema = new mongoose.Schema(
     {
-        postId: {
+        post_id: {
             type: Types.ObjectId,
-            ref: "Posts",
+            ref: "Post",
         },
-        userId: {
+        user_id: {
             type: Types.ObjectId,
-            ref: "Users",
+            ref: "User",
         },
         content: {
             type: String,
