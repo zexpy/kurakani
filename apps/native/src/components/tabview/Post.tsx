@@ -1,6 +1,5 @@
 import { FlatList } from "react-native"
 import { trpc } from "@libs/trpc"
-// import PostCard from "@components/post/PostCard"
 import Loading from "@components/Loading"
 import { IUser } from "@kurakani/core"
 import PostCard from "@components/Post"
@@ -17,6 +16,7 @@ const Post = ({ user }: { user: IUser }) => {
             data={data}
             renderItem={({ item }) => <PostCard user={user} post={item} />}
             showsVerticalScrollIndicator={false}
+            className="p-3 mb-4"
         />
     )
 }
