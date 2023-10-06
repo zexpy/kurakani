@@ -6,6 +6,7 @@ import FriendRequest from "@screens/FriendRequest"
 import colors from "../assets/colors"
 import SuggestFriend from "@screens/SuggestFriend"
 import Comment from "@components/comment"
+import ViewProfile from "@components/ViewProfile"
 
 const Stack = createNativeStackNavigator()
 const AfterAuth = () => {
@@ -48,6 +49,13 @@ const AfterAuth = () => {
                     options={{
                         headerTitleAlign: "center",
                         presentation: "modal",
+                    }}
+                />
+                <Stack.Screen
+                    name="View Profile"
+                    component={ViewProfile}
+                    options={{
+                        headerShown: false,
                     }}
                 />
             </Stack.Navigator>

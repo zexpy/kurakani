@@ -1,6 +1,5 @@
 import { Image, Text } from "react-native"
 import Box from "@components/Box"
-import { useCurrentUser } from "@hooks/useCurrentUser"
 import { MapPinIcon } from "react-native-heroicons/outline"
 import { useState } from "react"
 import { View, useWindowDimensions } from "react-native"
@@ -26,8 +25,8 @@ const renderTabBar = (props: any) => (
     />
 )
 
-export default function Profile() {
-    const { user } = useCurrentUser()
+export default function ViewProfile({ route }) {
+    const { user } = route.params
     const layout = useWindowDimensions()
 
     const [index, setIndex] = useState(0)

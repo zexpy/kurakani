@@ -17,7 +17,11 @@ const SuggestFriend = ({ route }) => {
             <Text className="text-lg font-bold">People you may know</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
                 {data.map((people) => {
-                    if (people._id === user._id || user.friends.includes(people._id)) {
+                    if (
+                        people._id === user._id ||
+                        user.friends.includes(people._id) ||
+                        !people.fullName
+                    ) {
                         return null
                     }
 

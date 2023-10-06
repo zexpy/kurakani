@@ -94,12 +94,7 @@ const FriendSection = () => {
                             }
                             return (
                                 <FriendCard
-                                    // @ts-ignore
-                                    name={item.fullName}
-                                    // @ts-ignore
-                                    email={item.email}
-                                    // @ts-ignore
-                                    profile_pic={item.profile_pic}
+                                    user={item}
                                     btnLabel="Message"
                                     // @ts-ignore
                                     handleSubmit={() => handleMessage(item?._id.toString())}
