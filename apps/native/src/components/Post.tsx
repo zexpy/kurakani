@@ -1,11 +1,10 @@
-import { View, Text, Image, Pressable } from "react-native"
+import { View, Text, Image, TouchableOpacity } from "react-native"
 import { EllipsisHorizontalIcon } from "react-native-heroicons/solid"
 import colors from "../assets/colors"
 import { useState } from "react"
 import Toast from "react-native-toast-message"
 import { ChatBubbleOvalLeftEllipsisIcon, HandThumbUpIcon } from "react-native-heroicons/outline"
 import { HandThumbUpIcon as HandThumbUpSolid } from "react-native-heroicons/solid"
-import { TouchableOpacity } from "react-native-gesture-handler"
 import { trpc } from "@libs/trpc"
 import { RouterOutput } from "types/user"
 import { useNavigation } from "@react-navigation/native"
@@ -22,7 +21,7 @@ interface PostProps {
 
 export default function Post({ post, user }: PostProps) {
     const [status, setStatus] = useState({
-        like: { count: post?.likes.length ?? 0, state: post.likes.includes(user._id) },
+        like: { count: post?.likes?.length ?? 0, state: post?.likes?.includes(user._id) },
         comment: { count: post.comments.length },
     })
     const { mutate: updateMutation } = trpc.updateLike.useMutation()
@@ -46,8 +45,9 @@ export default function Post({ post, user }: PostProps) {
             {/* // Profile */}
             <View className="flex-row justify-between">
                 <View className="flex-row items-center gap-2">
-                    <Pressable
+                    <TouchableOpacity
                         onPress={() => {
+                            console.log("hello")
                             // @ts-ignore
                             navigation.navigate("Profile" as never, {
                                 user: post.user_id,
@@ -61,7 +61,7 @@ export default function Post({ post, user }: PostProps) {
                             className="w-10 h-10 rounded-full "
                             alt="Profile Image"
                         />
-                    </Pressable>
+                    </TouchableOpacity>
                     <View>
                         <Text className="font-bold">{post.user_id.fullName}</Text>
                         <Text className="text-xs text-gray">{dayjs(post.createdAt).fromNow()}</Text>
@@ -109,7 +109,7 @@ export default function Post({ post, user }: PostProps) {
                 >
                     <ChatBubbleOvalLeftEllipsisIcon color={colors.primary} size={30} />
                     <Text className="font-bold text-sm px-1">
-                        {post.comments.length} comment{post.comments.length > 0 && "s"}
+                        {post?.comments?.length} comment{post?.comments?.length > 0 && "s"}
                     </Text>
                 </TouchableOpacity>
             </View>

@@ -30,7 +30,7 @@ const Photos = ({ user }: { user: IUser }) => {
                     if (!post.image) {
                         return
                     }
-                    return <PhotoCard photo={post} />
+                    return <PhotoCard photo={post} key={post._id.toString()} />
                 })}
             </View>
         </ScrollView>

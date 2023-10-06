@@ -65,7 +65,7 @@ const PostCard = ({ user, post }: IPostCard) => {
                         color={status.comment ? colors.primary : colors.gray}
                         size={30}
                     />
-                    <Text className="font-bold text-sm px-1">{post.comments.length} comment</Text>
+                    <Text className="font-bold text-sm px-1">{post?.comments?.length} comment</Text>
                 </TouchableOpacity>
             </View>
             <View className="border border-t-grayish opacity-20 mt-3" />
