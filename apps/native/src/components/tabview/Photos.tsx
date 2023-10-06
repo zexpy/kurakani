@@ -1,7 +1,7 @@
 import Loading from "@components/Loading"
-import { useCurrentUser } from "@hooks/useCurrentUser"
+import { IUser } from "@kurakani/core"
 import { trpc } from "@libs/trpc"
-import { FlatList, Image, View } from "react-native"
+import { Image, View } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { RouterOutput } from "types/user"
 
@@ -17,8 +17,7 @@ const PhotoCard = ({ photo }: { photo: PhotosOutput[0] }) => {
     )
 }
 
-const Photos = () => {
-    const { user } = useCurrentUser()
+const Photos = ({ user }: { user: IUser }) => {
     const { isLoading, data } = trpc.getPhotoByUserId.useQuery(user._id.toString())
 
     if (isLoading) {
@@ -31,7 +30,6 @@ const Photos = () => {
                     if (!post.image) {
                         return
                     }
-
                     return <PhotoCard photo={post} />
                 })}
             </View>

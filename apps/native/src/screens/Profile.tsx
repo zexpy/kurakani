@@ -10,12 +10,6 @@ import Post from "@components/tabview/Post"
 import Photos from "@components/tabview/Photos"
 import Friends from "@components/tabview/Friends"
 
-const renderScene = SceneMap({
-    first: Post,
-    second: Photos,
-    third: Friends,
-})
-
 const renderTabBar = (props: any) => (
     <TabBar
         {...props}
@@ -32,8 +26,8 @@ const renderTabBar = (props: any) => (
     />
 )
 
-export default function Profile() {
-    const { user } = useCurrentUser()
+export default function Profile({ route }) {
+    const { user } = route.params ? route.params : useCurrentUser()
     const layout = useWindowDimensions()
 
     const [index, setIndex] = useState(0)
@@ -42,6 +36,12 @@ export default function Profile() {
         { key: "second", title: "Photos" },
         { key: "third", title: "Friends" },
     ])
+
+    const renderScene = SceneMap({
+        first: () => <Post user={user} />,
+        second: () => <Photos user={user} />,
+        third: () => <Friends user={user} />,
+    })
     return (
         <>
             <Box>

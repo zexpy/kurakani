@@ -1,11 +1,11 @@
 import { FlatList } from "react-native"
-import { useCurrentUser } from "@hooks/useCurrentUser"
 import { trpc } from "@libs/trpc"
-import PostCard from "@components/post/PostCard"
+// import PostCard from "@components/post/PostCard"
 import Loading from "@components/Loading"
+import { IUser } from "@kurakani/core"
+import PostCard from "@components/Post"
 
-const Post = () => {
-    const { user } = useCurrentUser()
+const Post = ({ user }: { user: IUser }) => {
     const { data, isLoading } = trpc.getPostByUserId.useQuery(user._id.toString())
 
     if (isLoading) {
