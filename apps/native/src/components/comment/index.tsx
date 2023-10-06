@@ -1,19 +1,17 @@
 import { trpc } from "@libs/trpc"
 import React, { useState } from "react"
-import { ActivityIndicator, FlatList, Image, ScrollView } from "react-native"
+import { ActivityIndicator, FlatList } from "react-native"
 import { TextInput, TouchableOpacity, View } from "react-native"
 import { Text } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import CommentSection from "./CommentSection"
 
 const Comment = ({ route }) => {
-    const post = route?.params?.post
+    const { post, user } = route?.params
     const utils = trpc.useContext()
     const [comment, setComment] = useState<string>()
     const { isLoading, mutate: addCommentMutate } = trpc.addComment.useMutation()
-
     const [allComment, setAllComment] = useState(post.comments)
-
     const handlePostComment = async () => {
         if (!comment) {
             return
@@ -26,7 +24,7 @@ const Comment = ({ route }) => {
             {
                 onSuccess: (data) => {
                     setComment("")
-                    setAllComment((prev) => [...prev, data])
+                    setAllComment((prev: any) => [...prev, data])
                     utils.getFriendPost.invalidate()
                 },
             },
@@ -37,7 +35,9 @@ const Comment = ({ route }) => {
             <FlatList
                 data={allComment}
                 keyExtractor={(item) => item._id}
-                renderItem={({ item }) => <CommentSection comment={item} />}
+                renderItem={({ item }) => (
+                    <CommentSection comment={item} postId={post._id} userId={user._id} />
+                )}
                 showsVerticalScrollIndicator={false}
             />
             <View className="flex-row text-center gap-2 items-center">
