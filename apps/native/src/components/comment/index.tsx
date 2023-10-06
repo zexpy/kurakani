@@ -1,3 +1,4 @@
+import { useCurrentUser } from "@hooks/useCurrentUser"
 import { trpc } from "@libs/trpc"
 import React, { useState } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
@@ -7,7 +8,8 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import CommentSection from "./CommentSection"
 
 const Comment = ({ route }) => {
-    const { post, user } = route?.params
+    const { post } = route?.params
+    const { user } = useCurrentUser()
     const utils = trpc.useContext()
     const [comment, setComment] = useState<string>()
     const { isLoading, mutate: addCommentMutate } = trpc.addComment.useMutation()

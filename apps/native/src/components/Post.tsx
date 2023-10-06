@@ -22,7 +22,7 @@ interface PostProps {
 export default function Post({ post, user }: PostProps) {
     const [status, setStatus] = useState({
         like: { count: post?.likes?.length ?? 0, state: post?.likes?.includes(user._id) },
-        comment: { count: post.comments.length },
+        comment: { count: post?.comments?.length ?? 0 },
     })
     const { mutate: updateMutation } = trpc.updateLike.useMutation()
     const navigation = useNavigation()
@@ -47,9 +47,8 @@ export default function Post({ post, user }: PostProps) {
                 <View className="flex-row items-center gap-2">
                     <TouchableOpacity
                         onPress={() => {
-                            console.log("hello")
                             // @ts-ignore
-                            navigation.navigate("Profile" as never, {
+                            navigation.navigate("View Profile" as never, {
                                 user: post.user_id,
                             })
                         }}
