@@ -8,7 +8,7 @@ const Friends = ({ user }: { user: IUser }) => {
     return (
         <View className="p-2">
             <FlatList
-                data={data.friends}
+                data={data?.friends}
                 // @ts-ignore
                 keyExtractor={(item) => item._id.toString()}
                 renderItem={({ item }) => <FriendCard user={item} />}

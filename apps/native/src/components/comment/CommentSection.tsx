@@ -1,7 +1,8 @@
-import { View, Image, Text, TouchableOpacity, Modal, ActivityIndicator } from "react-native"
+import { View, Image, Text, TouchableOpacity, Modal } from "react-native"
 import dayjs from "dayjs"
 import { useState } from "react"
 import { trpc } from "@libs/trpc"
+import Delete from "@components/Delete"
 
 interface CommentSectionProps {
     comment: any
@@ -68,38 +69,12 @@ const CommentSection = ({ comment, postId, userId }: CommentSectionProps) => {
                     {dayjs(comment?.createdAt).fromNow()}
                 </Text>
             </TouchableOpacity>
-            <Modal
-                visible={isVisible}
-                animationType="slide"
-                style={{
-                    height: "100px",
-                }}
-            >
-                <View className="flex items-center py-2">
-                    <Text className="text-lg font-bold">Are you sure?</Text>
-                    <View className="flex-row justify-center gap-5 py-2">
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            className="bg-rose-500 rounded-md p-3 w-32"
-                            onPress={handleDelete}
-                        >
-                            {isLoading ? (
-                                <ActivityIndicator size="small" color="white" />
-                            ) : (
-                                <Text className="text-white text-center">Yes, delete it</Text>
-                            )}
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            className="bg-primary rounded-md p-3 w-20"
-                            onPress={() => {
-                                setIsVisible(false)
-                            }}
-                        >
-                            <Text className="text-white text-center">No</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+            <Modal visible={isVisible} transparent={true} animationType="slide">
+                <Delete
+                    handleDelete={handleDelete}
+                    setIsVisible={setIsVisible}
+                    isLoading={isLoading}
+                />
             </Modal>
         </>
     )

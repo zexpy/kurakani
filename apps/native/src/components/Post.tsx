@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native"
+import { View, Text, Image, TouchableOpacity, Modal } from "react-native"
 import { EllipsisHorizontalIcon } from "react-native-heroicons/solid"
 import colors from "../assets/colors"
 import { useState } from "react"
@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native"
 import { IUser } from "@kurakani/core"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
+import Delete from "./Delete"
 dayjs.extend(relativeTime)
 
 type OutPost = RouterOutput["getFriendPost"]
@@ -25,7 +26,10 @@ export default function Post({ post, user }: PostProps) {
         comment: { count: post?.comments?.length ?? 0 },
     })
     const { mutate: updateMutation } = trpc.updateLike.useMutation()
+    const { isLoading, mutate: deleteMutation } = trpc.deletePostById.useMutation()
     const navigation = useNavigation()
+    const [visible, setVisible] = useState(false)
+    const utils = trpc.useContext()
 
     const handleLike = async () => {
         setStatus((prev) => ({
@@ -38,6 +42,21 @@ export default function Post({ post, user }: PostProps) {
         updateMutation({
             post_id: post._id,
         })
+    }
+
+    const handleDelete = async () => {
+        deleteMutation(
+            {
+                postId: post._id,
+            },
+            {
+                onSuccess: () => {
+                    setVisible(false)
+                    utils.getPostByUserId.invalidate()
+                    utils.getFriendPost.invalidate()
+                },
+            },
+        )
     }
 
     return (
@@ -66,7 +85,14 @@ export default function Post({ post, user }: PostProps) {
                         <Text className="text-xs text-gray">{dayjs(post.createdAt).fromNow()}</Text>
                     </View>
                 </View>
-                <EllipsisHorizontalIcon color={colors.gray} onPress={async () => {}} />
+                {user._id === post.user_id._id && (
+                    <EllipsisHorizontalIcon
+                        color={colors.gray}
+                        onPress={async () => {
+                            setVisible(true)
+                        }}
+                    />
+                )}
             </View>
             {/* // Profile Description */}
             <View className="mt-4 mb-3">
@@ -113,6 +139,13 @@ export default function Post({ post, user }: PostProps) {
                 </TouchableOpacity>
             </View>
             <Toast />
+            <Modal visible={visible} transparent={true} animationType="slide">
+                <Delete
+                    setIsVisible={setVisible}
+                    handleDelete={handleDelete}
+                    isLoading={isLoading}
+                />
+            </Modal>
         </View>
     )
 }

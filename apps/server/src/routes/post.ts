@@ -6,6 +6,7 @@ import {
     getPostById,
     getFriendPost,
     updateLike,
+    deletePostById,
 } from "../controllers/post"
 
 export const postRouter = router({
@@ -15,4 +16,5 @@ export const postRouter = router({
     getFriendPost,
     updatePost,
     updateLike,
+    deletePostById,
 })
