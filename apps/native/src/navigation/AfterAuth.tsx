@@ -5,6 +5,7 @@ import DrawerStack from "./DrawerStack"
 import FriendRequest from "@screens/FriendRequest"
 import colors from "../assets/colors"
 import SuggestFriend from "@screens/SuggestFriend"
+import Comment from "@components/comment"
 
 const Stack = createNativeStackNavigator()
 const AfterAuth = () => {
@@ -39,6 +40,14 @@ const AfterAuth = () => {
                         headerStyle: {
                             backgroundColor: colors.primary,
                         },
+                    }}
+                />
+                <Stack.Screen
+                    name="Comment"
+                    component={Comment}
+                    options={{
+                        headerTitleAlign: "center",
+                        presentation: "modal",
                     }}
                 />
             </Stack.Navigator>

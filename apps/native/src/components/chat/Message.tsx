@@ -31,7 +31,6 @@ export function Message({ navigation, route }) {
         })
 
         socket.on("typing received", (user: Record<string, any>, typing: boolean) => {
-            console.log("typing r", typing)
             setTyping({
                 name: user.username,
                 state: typing,
