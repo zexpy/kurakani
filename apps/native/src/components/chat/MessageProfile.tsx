@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker"
 import { useCurrentUser } from "@hooks/useCurrentUser"
 import { useNavigation } from "@react-navigation/native"
 import dayjs from "dayjs"
@@ -19,44 +18,32 @@ const MessageProfile = ({ user }: MessageProfileProps) => {
     const latestMessage = user?.latestMessage
     // @ts-ignore
     const sender = getSender(logUser, user?.users)
+
     return (
         <TouchableOpacity
-            activeOpacity={5}
-            className=" flex-row items-center justify-between py-3"
-            onPress={() =>
+            activeOpacity={0.8}
+            className="border-b border-gray-200 py-3 flex-row items-center justify-between"
+            onPress={() => {
                 // @ts-ignore
                 navigation.navigate("MessageChat", {
                     sender: sender,
                     chatId: user._id.toString(),
                     user: logUser,
                 })
-            }
+            }}
         >
-            <View className="flex-row gap-3 items-center">
-                <Image
-                    source={{
-                        // @ts-ignore
-                        uri: sender.profile_pic,
-                    }}
-                    className="w-14 h-14 rounded-full "
-                    alt="Profile Image"
-                />
-                <View>
-                    <Text className="font-bold text-md">{sender.fullName}</Text>
-                    <View className="flex-row gap-5 text-sm">
-                        <Text
-                            className={`text-xs text-grayish ${
-                                !latestMessage?.isRead ? "font-bold" : ""
-                            }`}
-                        >
-                            {latestMessage?.content.slice(0, 20)}....
-                        </Text>
-                        <Text className="text-sm text-grayLight">
-                            {dayjs().diff(faker.date.past().toString(), "day")}
-                        </Text>
-                    </View>
+            <View className="flex-row items-center gap-5 justify-center">
+                <Image source={{ uri: sender.profile_pic }} className="w-16 h-16 rounded-full" />
+                <View className="ml-3 leading-8">
+                    <Text className="font-bold text-lg">{sender.fullName}</Text>
+                    <Text className="text-gray-800 text-md">
+                        {latestMessage?.content.slice(0, 30)}
+                    </Text>
                 </View>
             </View>
+            <Text className="text-[11px] text-gray-600 px-1 py-3">
+                {dayjs(latestMessage?.createdAt).fromNow()}
+            </Text>
         </TouchableOpacity>
     )
 }

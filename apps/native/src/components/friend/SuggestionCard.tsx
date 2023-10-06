@@ -66,7 +66,7 @@ const SuggestionCard = ({ people, user }: ISuggestionCardProps) => {
     }
 
     return (
-        <View className="my-2 flex-row justify-between items-center p-3 bg-gray-200 rounded-md shadow-2xl">
+        <View className="my-2 flex-row justify-between items-center p-3 bg-gray-100 rounded-md shadow-2xl">
             <View className={`flex flex-row items-center gap-3`}>
                 <Image
                     source={{

@@ -2,19 +2,21 @@ import React from "react"
 import { useCurrentUser } from "@hooks/useCurrentUser"
 import AfterAuth from "./AfterAuth"
 import BeforeAuth from "./BeforeAuth"
-import { ActivityIndicator, View } from "react-native"
-import colors from "../assets/colors"
 import { NavigationContainer } from "@react-navigation/native"
 import VerifyProileStack from "./VerifyProfileStack"
+import LottieView from "lottie-react-native"
 
 const StackNavigator = () => {
     const { user, isLoading } = useCurrentUser()
 
     if (isLoading) {
         return (
-            <View className="flex-1 justify-center items-center">
-                <ActivityIndicator color={colors.primary} />
-            </View>
+            <LottieView
+                source={require("../../assets/animation/Animation - 1696619036234.json")}
+                autoPlay
+                speed={2}
+                loop={true}
+            />
         )
     }
 

@@ -57,7 +57,7 @@ const FriendRequest = ({ route }) => {
                 return (
                     // @ts-ignore
                     <View
-                        className="p-3 m-2 bg-gray-200 rounded-md shadow-2xl"
+                        className="p-3 m-2 bg-gray-100 rounded-md shadow-2xl"
                         key={people._id.toString()}
                     >
                         <View className="flex flex-row items-center gap-3 justify-center">
@@ -65,7 +65,7 @@ const FriendRequest = ({ route }) => {
                                 source={{
                                     uri: user.profile_pic,
                                 }}
-                                className="h-20 w-20 rounded-full"
+                                className="h-16 w-16 rounded-full"
                             />
                             <View>
                                 <Text className="font-bold py-1 text-lg">

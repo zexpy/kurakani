@@ -37,7 +37,6 @@ const FriendSection = () => {
                 },
             },
         )
-        //@ts-ignore
     }
 
     return (
@@ -86,11 +85,7 @@ const FriendSection = () => {
                                     .toUpperCase()
                                     .includes(inputSearch.trim().toUpperCase())
                             ) {
-                                return (
-                                    <View className="flex justify-center items-center m-2">
-                                        <Text className="font-bold text-xl">No friends found</Text>
-                                    </View>
-                                )
+                                return
                             }
                             return (
                                 <FriendCard

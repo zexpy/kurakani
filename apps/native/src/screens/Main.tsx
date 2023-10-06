@@ -4,6 +4,8 @@ import Post from "@components/Post"
 import { useCurrentUser } from "@hooks/useCurrentUser"
 import { trpc } from "@libs/trpc"
 import Loading from "@components/Loading"
+import { RefreshControl } from "react-native"
+import { useState, useCallback } from "react"
 
 export enum ContentType {
     TEXT = "text",
@@ -13,7 +15,16 @@ export enum ContentType {
 const Main = ({ navigation }) => {
     const { user } = useCurrentUser()
     // @ts-ignore
-    const { data, isLoading } = trpc.getFriendPost.useQuery(user?.friends)
+    const { data, isLoading, refetch } = trpc.getFriendPost.useQuery(user?.friends)
+    const [isRefreshing, setIsRefreshing] = useState(false)
+
+    const handleRefresh = useCallback(() => {
+        setIsRefreshing(true)
+        refetch()
+        setTimeout(() => {
+            setIsRefreshing(false)
+        }, 1000)
+    }, [isRefreshing])
 
     if (isLoading) {
         return <Loading />
@@ -39,6 +50,9 @@ const Main = ({ navigation }) => {
                 renderItem={({ item }) => <Post post={item} user={user} />}
                 showsVerticalScrollIndicator={false}
                 className="mb-20"
+                refreshControl={
+                    <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+                }
             />
         </Box>
     )

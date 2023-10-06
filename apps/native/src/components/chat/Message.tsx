@@ -4,8 +4,8 @@ import { trpc } from "@libs/trpc"
 import React, { useState, useCallback, useEffect, useLayoutEffect } from "react"
 import { Text } from "react-native"
 import { GiftedChat } from "react-native-gifted-chat"
+
 export function Message({ navigation, route }) {
-    // const utils = trpc.useContext()
     useLayoutEffect(() => {
         navigation.setOptions({
             title: route.params.sender.username,
