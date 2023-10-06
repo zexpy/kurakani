@@ -19,6 +19,7 @@ This Kurakani has some additional tools already setup for you:
 -   [TypeScript](https://www.typescriptlang.org/) for static type checking
 -   [Prettier](https://prettier.io) for code formatting
 -   [Trpc](https://trpc.io/) for end-to-end typesafe apis
+-   [Socket Io](https://socket.io/) for real time communication
 
 # Setting up project
 
