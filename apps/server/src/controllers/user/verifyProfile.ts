@@ -12,6 +12,7 @@ export const verifyProfile = publicProcedure
                     lastName: z.string(),
                     address: z.string(),
                     profile_pic: z.string(),
+                    fullName: z.string(),
                 })
                 .partial(),
         }),

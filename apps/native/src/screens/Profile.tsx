@@ -57,7 +57,9 @@ export default function Profile() {
                             className="h-20 w-20 rounded-full"
                         />
                         <View>
-                            <Text className="text-xl font-bold">{user.fullName}</Text>
+                            <Text className="text-xl font-bold">
+                                {user.fullName ?? `${user.firstName} ${user.lastName}`}
+                            </Text>
                             <Text className="text-grayish">@{user.username}</Text>
                             <View className="flex-row items-center pt-[1px]">
                                 <MapPinIcon size={15} color="black" />

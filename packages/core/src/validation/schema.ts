@@ -14,7 +14,6 @@ export const passwordSchema = z
 
 export const fullNameSchema = z
     .string()
-    .trim()
     .min(3, { message: "Full name must be at least 3 characters" })
     .refine((value) => {
         const trimmedValue = value.trim()

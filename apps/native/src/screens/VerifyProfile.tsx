@@ -68,7 +68,10 @@ const VerifyProfile = ({ navigation }) => {
         verifyProfileMutate(
             {
                 id: user._id.toString(),
-                update: data,
+                update: {
+                    ...data,
+                    fullName: `${data.firstName} ${data.lastName}`,
+                },
             },
             {
                 onSuccess: (data) => {
