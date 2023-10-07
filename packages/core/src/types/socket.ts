@@ -5,7 +5,7 @@ export interface ServerToClientEvents {
 
     connected: () => void
 
-    "message received": (message: any) => void
+    getMessage: (message: any) => void
 
     "typing received": (user: Record<string, any>, typing: boolean) => void
 }
@@ -14,7 +14,7 @@ export interface ClientToServerEvents {
     hello: () => void
     setup: (user: any) => void
     "join chat": (chatId: string) => void
-    "send message": (message: any) => void
+    sendMessage: (message: any) => void
     typing: ({
         chatId,
         user,
