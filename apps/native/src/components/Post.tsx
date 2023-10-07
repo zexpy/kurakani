@@ -25,6 +25,8 @@ export default function Post({ post, user }: PostProps) {
         like: { count: post?.likes?.length ?? 0, state: post?.likes?.includes(user._id) },
         comment: { count: post?.comments?.length ?? 0 },
     })
+
+    console.log(user?.fullName, user?._id, post.user_id.fullName, post.user_id._id)
     const { mutate: updateMutation } = trpc.updateLike.useMutation()
     const { isLoading, mutate: deleteMutation } = trpc.deletePostById.useMutation()
     const navigation = useNavigation()
@@ -105,7 +107,9 @@ export default function Post({ post, user }: PostProps) {
                         alt="SOmething"
                     />
                 ) : null}
-                {Boolean(post.content) ? <Text className="text-lg">{post.content}</Text> : null}
+                {Boolean(post.content) ? (
+                    <Text className="text-lg">{post.content.trim()}</Text>
+                ) : null}
             </View>
             <View className="flex-row px-2 gap-2 mt-[1px] items-center">
                 <TouchableOpacity
