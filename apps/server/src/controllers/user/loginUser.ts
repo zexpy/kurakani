@@ -13,7 +13,7 @@ export const loginUser = publicProcedure
     )
     .mutation(async (opts) => {
         const { email, password } = opts.input
-        const user = await UserModel.findOne({ email }).select("email password")
+        const user = await UserModel.findOne({ email }).select("+password")
         if (!user) {
             throw new TRPCError({
                 code: "UNAUTHORIZED",
@@ -34,9 +34,6 @@ export const loginUser = publicProcedure
 
         return {
             jwt: token,
-            user: {
-                _id: user._id,
-                email: user.email,
-            },
+            user,
         }
     })

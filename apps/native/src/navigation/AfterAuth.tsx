@@ -7,9 +7,16 @@ import colors from "../assets/colors"
 import SuggestFriend from "@screens/SuggestFriend"
 import Comment from "@components/comment"
 import ViewProfile from "@components/ViewProfile"
+import { useCurrentUser } from "@hooks/useCurrentUser"
+import VerifyProileStack from "./VerifyProfileStack"
 
 const Stack = createNativeStackNavigator()
 const AfterAuth = () => {
+    const { user } = useCurrentUser()
+
+    if (!user.fullName && !user.profile_pic) {
+        return <VerifyProileStack />
+    }
     return (
         <>
             <Stack.Navigator>
