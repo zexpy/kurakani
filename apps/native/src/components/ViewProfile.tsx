@@ -1,5 +1,4 @@
 import { Image, Text } from "react-native"
-import Box from "@components/Box"
 import { MapPinIcon } from "react-native-heroicons/outline"
 import { useState } from "react"
 import { View, useWindowDimensions } from "react-native"
@@ -8,6 +7,7 @@ import colors from "../assets/colors"
 import Post from "@components/tabview/Post"
 import Photos from "@components/tabview/Photos"
 import Friends from "@components/tabview/Friends"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 const renderTabBar = (props: any) => (
     <TabBar
@@ -43,7 +43,7 @@ export default function ViewProfile({ route }) {
     })
     return (
         <>
-            <Box>
+            <SafeAreaView style={{ backgroundColor: "white" }} className="p-4">
                 <View className="flex-row items-center gap-3">
                     <Image
                         source={{
@@ -60,7 +60,7 @@ export default function ViewProfile({ route }) {
                         </View>
                     </View>
                 </View>
-            </Box>
+            </SafeAreaView>
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
