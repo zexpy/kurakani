@@ -6,8 +6,16 @@ import { AdjustmentsHorizontalIcon, HomeIcon, UsersIcon } from "react-native-her
 import colors from "../assets/colors"
 import Toast from "react-native-toast-message"
 import FriendSection from "@screens/FriendSection"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Main from "@screens/Main"
+import AddPost from "@screens/AddPost"
+import Profile from "@screens/Profile"
+import Chat from "@screens/Chat"
 
 const Drawer = createDrawerNavigator()
+const Tab = createBottomTabNavigator();
+
+
 
 const DrawerStack = () => {
     return (
@@ -47,6 +55,7 @@ const DrawerStack = () => {
                 />
             </Drawer.Navigator>
             <Toast position="top" />
+            
         </>
     )
 }
