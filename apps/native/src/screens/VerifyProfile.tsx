@@ -15,7 +15,6 @@ import { Toast } from "react-native-toast-message/lib/src/Toast"
 
 const VerifyProfile = ({ navigation }) => {
     const { user, setUser, isLoading } = useCurrentUser()
-
     const [imageLoading, setImageLoading] = useState<boolean>(false)
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -33,7 +32,7 @@ const VerifyProfile = ({ navigation }) => {
                 </TouchableOpacity>
             ),
         })
-    }, [navigation])
+    }, [])
 
     const {
         control,
@@ -48,9 +47,9 @@ const VerifyProfile = ({ navigation }) => {
         },
         resolver: zodResolver(UpdateSchema),
     })
-
     const [image, setImage] = useState<string>(user?.profile_pic)
-    const { isLoading: updateLoading, mutate } = trpc.verifyProfile.useMutation()
+    const { isLoading: updateLoading, mutate: verifyProfileMutate } =
+        trpc.verifyProfile.useMutation()
     const { mutate: uploadImageMutate } = trpc.updateUser.useMutation()
 
     if (isLoading) {
@@ -66,7 +65,7 @@ const VerifyProfile = ({ navigation }) => {
                 position: "top",
             })
         }
-        mutate(
+        verifyProfileMutate(
             {
                 id: user._id.toString(),
                 update: data,
@@ -75,8 +74,8 @@ const VerifyProfile = ({ navigation }) => {
                 onSuccess: (data) => {
                     // @ts-ignore
                     setUser(data)
+                    setImageLoading(false)
                 },
-
                 onError: () => {
                     setImageLoading(false)
                 },
@@ -84,7 +83,7 @@ const VerifyProfile = ({ navigation }) => {
         )
     }
 
-    const hanleUploadCloudinary = async (image: any) => {
+    const handleUploadCloudinary = async (image: any) => {
         const formData = new FormData()
         formData.append("file", image)
         formData.append("upload_preset", UPLOAD_PRESET)
@@ -121,8 +120,6 @@ const VerifyProfile = ({ navigation }) => {
 
     const handleUploadImage = async () => {
         try {
-            // const permissions =
-            //   await ImagePicker.requestMediaLibraryPermissionsAsync();
             setImageLoading(true)
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -131,7 +128,7 @@ const VerifyProfile = ({ navigation }) => {
                 quality: 0.5,
             })
             if (!result.canceled) {
-                await hanleUploadCloudinary({
+                await handleUploadCloudinary({
                     uri: result.assets[0].uri,
                     type: `profile/${result.assets[0].uri.split(".")[1]}`,
                     name: `profile.${Date.now()}.${result.assets[0].uri.split(".")[1]}`,

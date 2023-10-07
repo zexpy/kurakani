@@ -26,7 +26,6 @@ export default function Post({ post, user }: PostProps) {
         comment: { count: post?.comments?.length ?? 0 },
     })
 
-    console.log(user?.fullName, user?._id, post.user_id.fullName, post.user_id._id)
     const { mutate: updateMutation } = trpc.updateLike.useMutation()
     const { isLoading, mutate: deleteMutation } = trpc.deletePostById.useMutation()
     const navigation = useNavigation()

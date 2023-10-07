@@ -28,10 +28,10 @@ const UpdateProfile = ({ setIsVisible }: UpdateProfileProps) => {
 
     const { isLoading, mutate: updateProfileMutation } = trpc.updateUser.useMutation()
 
-    console.log(user)
     const updateSubmit = (data: Record<string, any>) => {
         updateProfileMutation(
             {
+                id: user?._id.toString(),
                 update: data,
             },
             {

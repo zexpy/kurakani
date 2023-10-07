@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator()
 const AfterAuth = () => {
     const { user } = useCurrentUser()
 
-    if (!user.fullName && !user.profile_pic) {
+    if (!user.profile_pic || (!user.fullName && !user.firstName && !user.lastName)) {
         return <VerifyProileStack />
     }
     return (

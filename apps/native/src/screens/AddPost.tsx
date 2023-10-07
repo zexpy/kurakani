@@ -14,8 +14,8 @@ const AddPost = ({ navigation }) => {
     const [text, setText] = useState<string>()
     const [placeholder, setPlaceHolder] = useState<string>("What's on your mind?")
     const [image, setImage] = useState<string>()
-
     const { isLoading, mutate: mutatePost } = trpc.addPost.useMutation()
+    const [imageLoading, setImageLoading] = useState<boolean>(false)
 
     const handleSubmit = () => {
         if (!image && !text) {
@@ -85,6 +85,7 @@ const AddPost = ({ navigation }) => {
                 <TouchableOpacity
                     onPress={async () => {
                         const result = await handleUploadImage()
+                        setImageLoading(true)
                         setImage(result.assets[0].uri)
                         setPlaceHolder("Say something about this photo...")
                         const v2 = await handleUploadCloudinary({
@@ -93,6 +94,7 @@ const AddPost = ({ navigation }) => {
                             name: `post.${Date.now()}.${result.assets[0].uri.split(".")[1]}`,
                         })
                         setImage(v2.secure_url)
+                        setImageLoading(false)
                     }}
                     className="my-3"
                 >
@@ -108,7 +110,7 @@ const AddPost = ({ navigation }) => {
                     onPress={handleSubmit}
                     activeOpacity={0.8}
                 >
-                    {isLoading ? (
+                    {isLoading || imageLoading ? (
                         <ActivityIndicator size="small" color="white" />
                     ) : (
                         <Text className="text-white text-center font-bold">Add Post</Text>

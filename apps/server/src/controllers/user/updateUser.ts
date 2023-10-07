@@ -1,11 +1,11 @@
 import UserModel from "../../models/user.schema"
-import { privateProcedure } from "../../libs/trpc"
+import { publicProcedure } from "../../libs/trpc"
 import { z } from "zod"
 
-export const updateUser = privateProcedure
+export const updateUser = publicProcedure
     .input(
         z.object({
-            id: z.string().readonly().optional(),
+            id: z.string().optional(),
             update: z
                 .object({
                     username: z.string(),
@@ -18,7 +18,7 @@ export const updateUser = privateProcedure
         }),
     )
     .mutation(async (opts) => {
-        return await UserModel.findByIdAndUpdate(opts.ctx.user?.id, opts.input.update, {
+        return await UserModel.findByIdAndUpdate(opts.input.id, opts.input.update, {
             new: true,
         })
     })

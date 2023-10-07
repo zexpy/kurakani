@@ -2,16 +2,19 @@ import { z } from "zod"
 
 export const usernameSchema = z
     .string()
+    .trim()
     .min(5, { message: "Username must be at least 5 characters" })
-export const emailSchema = z.string().email({ message: "Invalid Email Address" })
+export const emailSchema = z.string().trim().email({ message: "Invalid Email Address" })
 
 export const passwordSchema = z
     .string()
+    .trim()
     .min(6, "Password must be at least 6 characters")
     .max(20, "Password cannot exceed 20 characters")
 
 export const fullNameSchema = z
     .string()
+    .trim()
     .min(3, { message: "Full name must be at least 3 characters" })
     .refine((value) => {
         const trimmedValue = value.trim()
@@ -30,7 +33,7 @@ export const SignUpSchema = z
         email: emailSchema,
         username: usernameSchema,
         password: passwordSchema,
-        confirmPassword: z.string(),
+        confirmPassword: z.string().trim(),
     })
     .refine(({ password, confirmPassword }) => password === confirmPassword, {
         message: "Passwords don't match",
@@ -39,10 +42,10 @@ export const SignUpSchema = z
 export type ISignUpCreds = z.infer<typeof SignUpSchema>
 
 export const UpdateSchema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
+    firstName: z.string().trim(),
+    lastName: z.string().trim(),
     email: emailSchema,
-    address: z.string(),
+    address: z.string().trim(),
     dob: z.string().optional(),
 })
 

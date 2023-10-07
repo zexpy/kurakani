@@ -4,16 +4,17 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from "@react-navigation/native"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ILoginCreds, LoginSchema, TokenProvider, useUserStore } from "@kurakani/core"
+import { ILoginCreds, LoginSchema, TokenProvider } from "@kurakani/core"
 import { Toast } from "react-native-toast-message/lib/src/Toast"
 import Card from "../ui/Card"
 import Input from "../ui/Input"
 import Button from "../ui/Button"
 import { trpc } from "@libs/trpc"
+import { useCurrentUser } from "@hooks/useCurrentUser"
 
 const Login = () => {
     const { isLoading, mutate: loginWithEmail } = trpc.loginUser.useMutation()
-    const setUser = useUserStore((state) => state.setUser)
+    const { setUser } = useCurrentUser()
 
     const navigation = useNavigation()
     const {
@@ -34,7 +35,6 @@ const Login = () => {
                 // @ts-ignore
                 setUser(user.user)
                 await TokenProvider.setItem("user", JSON.stringify(user))
-
                 Toast.show({
                     type: "success",
                     visibilityTime: 700,
