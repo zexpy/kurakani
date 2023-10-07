@@ -5,7 +5,7 @@ import { trpc } from "@libs/trpc"
 import Loading from "@components/Loading"
 import { FlatList } from "react-native-gesture-handler"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { RefreshControl } from "react-native"
 
 export default function Chat() {
@@ -22,6 +22,7 @@ export default function Chat() {
     if (isLoading) {
         return <Loading />
     }
+
     return (
         <SafeAreaView
             className="p-3"
@@ -38,7 +39,7 @@ export default function Chat() {
             </View>
             <FlatList
                 data={data}
-                renderItem={({ item }) => <MessageProfile user={item} />}
+                renderItem={({ item }) => <MessageProfile chat={item} />}
                 keyExtractor={(item) => item._id.toString()}
                 refreshControl={
                     <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />

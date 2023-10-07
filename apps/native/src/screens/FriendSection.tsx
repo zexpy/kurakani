@@ -27,12 +27,12 @@ const FriendSection = () => {
             {
                 onSuccess: (data) => {
                     // @ts-ignore
-                    const sender = getSender(user, data?.users)
+                    const receiver = getSender(data?.users, user)
                     // @ts-ignore
                     navigation.navigate("MessageChat", {
-                        sender,
-                        chatId: data._id.toString(),
+                        chat: data,
                         user,
+                        receiver,
                     })
                 },
             },
