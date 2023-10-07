@@ -7,14 +7,13 @@ import LottieView from "lottie-react-native"
 
 const StackNavigator = () => {
     const { user, isLoading } = useCurrentUser()
-    console.log(user)
 
     if (isLoading) {
         return (
             <LottieView
                 source={require("../../assets/animation/Animation - 1696619036234.json")}
                 autoPlay
-                speed={2}
+                speed={1}
                 loop={true}
             />
         )
