@@ -1,48 +1,48 @@
-import Loading from "@components/Loading"
 import socket from "@libs/socket"
 import { trpc } from "@libs/trpc"
 import React, { useState, useCallback, useEffect, useLayoutEffect } from "react"
 import { Text } from "react-native"
-import { GiftedChat } from "react-native-gifted-chat"
+import { Avatar, GiftedChat } from "react-native-gifted-chat"
 
 export function Message({ navigation, route }) {
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: route.params.sender.username,
+            title: route.params.receiver?.username,
         })
     })
+
     const [messages, setMessages] = useState([])
-    const chatId = route.params.chatId
-    const user = route.params.user
-    const { isLoading, data } = trpc.allMessage.useQuery(chatId)
+    const { chat, receiver, user } = route.params
+    const { isLoading, data } = trpc.allMessage.useQuery(chat._id.toString())
     const { mutate: sendMessageMutate } = trpc.sendMessage.useMutation()
 
     const [typing, setTyping] = useState({
         name: "",
         state: false,
     })
-    useEffect(() => {
-        socket.emit("join chat", chatId)
-    }, [])
 
     useEffect(() => {
-        socket.on("message received", (messages) => {
-            setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+        socket.on("getMessage", (data) => {
+            setMessages((previous) => GiftedChat.append(previous, data.messages))
         })
 
-        socket.on("typing received", (user: Record<string, any>, typing: boolean) => {
+        socket.on("getTyping", (data) => {
             setTyping({
-                name: user.username,
-                state: typing,
+                name: data?.sender?.username,
+                state: data?.typing,
             })
         })
 
         return () => {
-            socket.off("message received")
+            socket.off("getMessage")
 
-            socket.off("typing received")
+            socket.off("getTyping")
         }
     }, [])
+
+    useEffect(() => {
+        socket.emit("addUser", user._id)
+    }, [user])
 
     useEffect(() => {
         if (!data) {
@@ -52,18 +52,17 @@ export function Message({ navigation, route }) {
     }, [data])
 
     const onSend = useCallback((messages = []) => {
-        socket.emit("send message", { messages: messages, chatId })
-        sendMessageMutate(
-            {
-                content: messages[0].text,
-                chat_id: chatId,
-            },
-            {
-                onSuccess: () => {
-                    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
-                },
-            },
-        )
+        socket.emit("sendMessage", {
+            sender: user,
+            receiverId: receiver?._id,
+            messages,
+        })
+
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+        sendMessageMutate({
+            content: messages[0].text,
+            chat_id: chat._id,
+        })
     }, [])
 
     const renderFooter = () => {
@@ -73,16 +72,12 @@ export function Message({ navigation, route }) {
         return <Text className="p-2 px-4">{typing.name} is typing</Text>
     }
 
-    const handleTyping = (text?: string) => {
+    const handleTyping = (text: string) => {
         if (!text) {
-            socket.emit("typing", { chatId, user: user, typing: false })
+            socket.emit("typing", { sender: user, receiverId: receiver._id, typing: false })
             return
         }
-        socket.emit("typing", { chatId, user: user, typing: true })
-    }
-
-    if (isLoading) {
-        return <Loading />
+        socket.emit("typing", { sender: user, receiverId: receiver._id, typing: true })
     }
 
     return (
@@ -90,10 +85,15 @@ export function Message({ navigation, route }) {
             messages={messages}
             onInputTextChanged={handleTyping}
             onSend={(messages) => onSend(messages)}
+            renderAvatar={(props) => <Avatar {...props} showAvatarForEveryMessage />}
             user={{
-                _id: user._id.toString(),
+                _id: user?._id.toString(),
+                avatar: user.profile_pic,
             }}
+            scrollToBottom
             renderFooter={renderFooter}
+            isLoadingEarlier={isLoading}
+            alwaysShowSend
         />
     )
 }
