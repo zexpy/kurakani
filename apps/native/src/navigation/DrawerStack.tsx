@@ -1,8 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer"
-import FriendRequest from "@screens/FriendRequest"
 import Tabs from "./Tabs"
 import CustomDrawer from "@screens/CustomDrawer"
-import { AdjustmentsHorizontalIcon, HomeIcon, UsersIcon } from "react-native-heroicons/outline"
+import { HomeIcon, UsersIcon } from "react-native-heroicons/outline"
 import colors from "../assets/colors"
 import Toast from "react-native-toast-message"
 import FriendSection from "@screens/FriendSection"
@@ -34,15 +33,6 @@ const DrawerStack = () => {
                     component={FriendSection}
                     options={{
                         drawerIcon: ({ color }) => <UsersIcon size={22} color={color} />,
-                    }}
-                />
-                <Drawer.Screen
-                    name="Settings"
-                    component={FriendRequest}
-                    options={{
-                        drawerIcon: ({ color }) => (
-                            <AdjustmentsHorizontalIcon size={22} color={color} />
-                        ),
                     }}
                 />
             </Drawer.Navigator>

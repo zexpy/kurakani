@@ -6,7 +6,7 @@ const FriendRequest = ({ route }) => {
     const utils = trpc.useContext()
     const user = route?.params?.user
     const { isLoading, data } = trpc.getFriendRequestById.useQuery(user._id.toString())
-    const { mutate: handleRequest } = trpc.updateRequest.useMutation()
+    const { mutate: handleRequest, isLoading: updateReqLoading } = trpc.updateRequest.useMutation()
 
     if (isLoading) {
         return <Loading />
@@ -65,7 +65,7 @@ const FriendRequest = ({ route }) => {
                                 source={{
                                     uri: user.profile_pic,
                                 }}
-                                className="h-16 w-16 rounded-full"
+                                className="h-14 w-14 rounded-full"
                             />
                             <View>
                                 <Text className="font-bold py-1 text-lg">
@@ -82,7 +82,7 @@ const FriendRequest = ({ route }) => {
                                         onPress={() => acceptRequest(people.sender_id._id)}
                                     >
                                         <Text className="text-center text-white font-bold">
-                                            Confirm
+                                            Confirm {updateReqLoading && "ing"}
                                         </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
