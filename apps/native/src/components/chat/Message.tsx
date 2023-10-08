@@ -41,7 +41,7 @@ export function Message({ navigation, route }) {
     }, [])
 
     useEffect(() => {
-        socket.emit("addUser", user._id)
+        socket.emit("addUser", user?._id)
     }, [user])
 
     useEffect(() => {
@@ -74,10 +74,10 @@ export function Message({ navigation, route }) {
 
     const handleTyping = (text: string) => {
         if (!text) {
-            socket.emit("typing", { sender: user, receiverId: receiver._id, typing: false })
+            socket.emit("typing", { sender: user, receiverId: receiver?._id, typing: false })
             return
         }
-        socket.emit("typing", { sender: user, receiverId: receiver._id, typing: true })
+        socket.emit("typing", { sender: user, receiverId: receiver?._id, typing: true })
     }
 
     return (
