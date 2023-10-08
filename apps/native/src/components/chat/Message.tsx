@@ -2,7 +2,7 @@ import socket from "@libs/socket"
 import { trpc } from "@libs/trpc"
 import React, { useState, useCallback, useEffect, useLayoutEffect } from "react"
 import { Text } from "react-native"
-import { Avatar, GiftedChat } from "react-native-gifted-chat"
+import { Avatar, Bubble, GiftedChat } from "react-native-gifted-chat"
 
 export function Message({ navigation, route }) {
     useLayoutEffect(() => {
@@ -94,6 +94,16 @@ export function Message({ navigation, route }) {
             renderFooter={renderFooter}
             isLoadingEarlier={isLoading}
             alwaysShowSend
+            renderBubble={(props) => (
+                <Bubble
+                    {...props}
+                    wrapperStyle={{
+                        left: {
+                            backgroundColor: "#C5C6D0",
+                        },
+                    }}
+                />
+            )}
         />
     )
 }
